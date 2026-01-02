@@ -1,23 +1,32 @@
 .PHONY: all
 
-all: dir compile_asm_libs compile move cloader clean
+all: dir compile_asm_libs compile move cloader move clean
 
+#
+# Delete obj file
+#
 clean:
 	rm -rf *.o
-	
+
+#
+# Delete build dir
+#
 reset:
 	rm -rf build
 
+#
+# Create build dir
+#
 dir:
 	mkdir -p build
 
+#
+# Set header files for clib+
+# Set clib+ obj file to system-wide lib dir
+#
 move:
 	cp -r headers/* /usr/local/include
-
-test:
-	gcc -nostdlib t.c -o build/app \
-	src/*.c src/**/*.c \
-	build/lib.o
+	cp build/libclibp.a /usr/lib
 
 count:
 	wc -l t.c \
@@ -49,13 +58,6 @@ compile:
 	ar rcs build/libclibp.a *.o
 	ar rcs build/clibp.o *.o
 	rm -rf *.o
-
-#	gcc t.c -o t \
-#	src/*.c \
-#	src/stdlib/*.c \
-#	src/libs/*.c \
-#	build/lib.o \
-#	-ggdb
 
 #
 # Compile clib+ compiler-linker into a object file

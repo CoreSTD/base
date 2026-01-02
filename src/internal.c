@@ -65,3 +65,9 @@ none print(const str buff)
 {
 	_syscall(1, 1, (unsigned long)buff, str_len(buff));
 }
+
+none println(const str buff)
+{
+	_syscall(1, 1, (unsigned long)buff, str_len(buff));
+	_syscall(1, 1, (unsigned long)"\n", 2);
+}

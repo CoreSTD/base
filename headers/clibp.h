@@ -66,6 +66,7 @@ none 	printc(const char ch);
 none 	printi(int num);
 none 	_printi(int value);
 none 	print(const str buff);
+none	println(const str buff);
 none 	printsz(const str buff, int sz);
 none 	printa(const str *buff);
 none 	err_n_exit(const str buff, int code);
