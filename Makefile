@@ -32,7 +32,7 @@ compile_asm_libs:
 
 #
 # Compile the current arch core ASM lib for clib+ built-in
-# Merge clibp+ built-in lib for the compiler and for the system to use clib+ with other compilers
+# Merge clib+ built-in lib for the compiler and another for external use with other compilers
 #
 
 compile:
