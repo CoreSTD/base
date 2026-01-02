@@ -3,7 +3,7 @@
 *   [ CLIBP LINKER ]
 *
 *   GCC-CLIBP LOADER
-*
+*   @Reason: To debug on linux raw binaries used for making OS(s)
 */
 // Loader's Main Function Declaration
 void entry();
