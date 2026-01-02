@@ -7,17 +7,17 @@ This library is still in development!
 
 The library is a Architecture-targeted freestanding C compiler backend
 
-What does it do?
+### What does it do?
 
 - Targets the architecture for built-in tooling (ASM libs)
 - Built-in serves as the standard lib, minimal abstractions
 - Cross-architect compilation
 
-# What is it used for?
+### What is it used for?
 
 - Creating raw binaries for OS development and building
 
-# Supported Architectures
+### Supported Architectures
 
 - x86
 - x86_64
