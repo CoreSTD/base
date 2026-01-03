@@ -10,6 +10,9 @@
 
 # Things clib+ doesn't support yet
 
+- No argument syntax checking
+	Expects: <input> -o <output>
+	Optional flags: --strip --nolink
 - Multiple files
 - C flags
 

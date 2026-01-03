@@ -165,6 +165,12 @@ void _start() {
         }
     }
 
+    if(arr_contains(__ARGV__, __ARGC__, "--nolink") > -1)
+	{
+        print("Exiting\n");
+        __syscall(60, 0, 0, 0, -1, -1, -1);
+	}
+
 	char *OUTPUT = __ARGV__[3];
 	print("[ + ] Linking to "), print(OUTPUT), print("....!\n");
     char *n[8] = {
