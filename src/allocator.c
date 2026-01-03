@@ -24,7 +24,7 @@ void init_mem() {
 	_HEAP_ = (void *)ret;
 
     // Clear the heap to mark all memory as free
-    mem_set(_HEAP_, 0, _HEAP_PAGE_SZ_);
+    mem_set(_HEAP_, 1, _HEAP_PAGE_SZ_);
 
     if (HEAP_DEBUG)
         print("[ + ] Heap initialized!\n");
@@ -35,7 +35,7 @@ static int find_space(int space)
     for (int i = 0; i <= _HEAP_PAGE_SZ_ - space; i++) {
         int free = 1;
         for (int j = 0; j < space; j++) {
-            if (((char *)_HEAP_)[i + j] != 0) {
+            if (((char *)_HEAP_)[i + j] != 1) {
                 free = 0;
                 break;
             }
@@ -65,11 +65,8 @@ any allocate(int sz, int len) {
 
     __meta__ c = { .size = sz, .length = len, .id = 0x7C };
 
-    // Copy meta into allocated block
     mem_cpy(ptr, &c, HEAP_META_SZ);
-
-    // Mark memory as used (fill with 1s or some non-zero)
-    mem_set(ptr + HEAP_META_SZ, 1, mem_needed - HEAP_META_SZ);
+    mem_set(ptr + HEAP_META_SZ, 0, mem_needed - HEAP_META_SZ);
 
     used_mem += mem_needed;
 

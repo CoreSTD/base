@@ -4,7 +4,6 @@
 
 int main()
 {
-    int dick = sysconf(_SC_PAGESIZE);
-    printf("%d\n", dick);
+    printf("%ld\n", sizeof(unsigned long));
     return 0;
 }
