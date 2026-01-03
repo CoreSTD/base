@@ -34,9 +34,10 @@
 
 Run the following commands to install the library!
 ```bash
-sudo apt install make;
+sudo apt install git make;
 git clone https://github.com/clibplus/clibp_v3_0.git
-cd cdlib_v3_0; make; make cloader
+cd cdlib_v3_0
+make # make tcc (for tcc (not complete, testing stage))
 ```
 
 # Standard Lib Use
