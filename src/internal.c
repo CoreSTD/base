@@ -24,6 +24,22 @@ int get_input(str dest, len_t count) {
 	return bytes_read;
 }
 
+void ptr_to_str(void *p, char *out)
+{
+    static const char hex[] = "0123456789abcdef";
+    uintptr_t v = (uintptr_t)p;
+
+    out[0] = '0';
+    out[1] = 'x';
+
+    for (int i = (sizeof(uintptr_t) * 2) - 1; i >= 0; i--) {
+        out[2 + ((sizeof(uintptr_t) * 2 - 1) - i)] =
+            hex[(v >> (i * 4)) & 0xF];
+    }
+
+    out[2 + sizeof(uintptr_t) * 2] = '\0';
+}
+
 none printnum(int num)
 {
 	char BUFF[100] = {0};

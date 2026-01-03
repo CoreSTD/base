@@ -11,6 +11,7 @@
 	#define printf print
 	#define nullptr_t ((void *)0)
 	#define emptyptr_t ((void *)-1)
+	
 #endif
 
 /*
@@ -33,8 +34,10 @@
 	#include "asm.h"
 #endif
 
-#define _STANDARD_MEM_SZ_
+
 #include "allocator.h"
+
+typedef unsigned long int       uintptr_t; // Temporary
 
 /* Some Built-in Types */
 #define NULL 			0
@@ -72,6 +75,7 @@ void __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long ar
 // Get Start-up App Cmdline Arguments
 int 	get_args(char *argv[]);
 
+void 	ptr_to_str(void *p, char *out);
 none 	__exit(int code);
 none 	printc(const char ch);
 none 	printi(int num);

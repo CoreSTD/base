@@ -451,6 +451,9 @@ typedef struct {
 	#define _SYS_FUTEX_WAITV     		449
 	#define _SET_MEMPOLICY_HOME_NOD		-1
 #elif defined(__x86_64__)
+	/* x86_64 registers */
+
+	/* x86_64 syscalls */
     #define _SYS_READ                   0
     #define _SYS_WRITE                  1
     #define _SYS_OPEN                   2
@@ -787,6 +790,9 @@ typedef struct {
     #define _IO_PGETEVENTS              333
     #define _RSEQ                       334
     #define _PKEY_MPROTECT2             335
+
+	/* x86_64 syscall wrappers */
+	long __sys_mmap(long arg1, long arg2, long arg3, long arg4, long arg5, long arg6);
 #endif
 
 #if defined(___x86___)

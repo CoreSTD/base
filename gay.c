@@ -9,26 +9,35 @@
   // gcc_clibp test.c -o test
   - clib+   entry()
 */
-#define DISABLE_AUTO_ARCH_DET
-#define CLIBP_x86_64
-#define __CLIBP__
-
 #include <stdio.h>
-#include <clibp.h>
 
-#define _STANDARD_MEM_SZ_
+#define __CLIBP__
+#include <clibp.h>
+#include <asm.h>
+
 #include <allocator.h>
 
 /* gcc_clibp */
 entry_t entry()
 {
 	println("Attempting to init heap...");
+    
 	HEAP_DEBUG = 1;
+    set_heap_sz(_LARGE_MEM_SZ_);
 	init_mem();
 
-	print("Heap: "), printi(__is_heap_init__()), print(": "), printi(__get_total_mem_used__()), print(":"), printi(_HEAP_PAGE_SZ_), print("\n");
+    
+	print("Heap: "), printi(__is_heap_init__()), 
+    print(": "), printi(__get_total_mem_used__()), 
+    print(":"), _printi(_HEAP_PAGE_SZ_), print("\n");
+
 	str n = allocate(0, 10);
 	if(n == NULL) println("ERROR ALLOCATING\n");
+
+    print("Heap: "), printi(__is_heap_init__()), 
+    print(": "), _printi(__get_total_mem_used__()), 
+    print(":"), _printi(_HEAP_PAGE_SZ_), print("\n");
+
     println("Compiled with CLIBP");
     return 0;
 }
