@@ -1,16 +1,32 @@
+###
+#
+# 		clib+ Installer
+#
+###
 .PHONY: all
 
+# Default Installer
 all: dir compile cloader move clean
-tcc: tcc_compile 
 
+# TCC (In Testing Stage) 'sudo make'
+tcc: tcc_compile
+
+#
+#
+#	TCC Compilation
+#
+# 	- Still in development
+#	- Unable to compile @ gcc_clibp with the backend
+#
 tcc_compile:
 	mkdir -p build
 
 	tcc -ffreestanding -std=c99 -c src/*.c \
 	src/stdlib/*.c \
 	src/libs/*.c \
-	-nostdlib -nostdinc 
+	-nostdlib -nostdinc
 # 	execstack -c *.o
+
 	ar rcs build/libclibp.a *.o
 	ar rcs build/clibp.o *.o
 	rm -rf *.o
@@ -22,11 +38,12 @@ tcc_compile:
 
 	ld -o gcc_clibp gcc_clibp.o build/clibp.o
 	rm gcc_clibp.o
-	
+
 	cp -r headers/* /usr/local/include
 	cp build/libclibp.a /usr/lib
 
 	rm -rf *.o
+
 #
 # Delete obj file
 #
