@@ -31,18 +31,6 @@
 #include "asm.h"
 
 /*
-	Implment C Types when using -nostdlib -nostdinc
-*/
-#if defined(__TINYC__) || defined(__GNUC__)
-	#if !defined(__GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION)
-		#define NULL 					((void *)0)
-
-		/* From stdint.h */
-		typedef unsigned long int       uintptr_t;
-	#endif
-#endif
-
-/*
 	Built-in Types
 */
 
@@ -85,7 +73,6 @@ typedef void 				*handler_t;
 typedef void 				*ptr;
 
 /* Counters */
-typedef i32 				size_t;
 typedef i32 				len_t;
 typedef i32					pos_t;
 
@@ -96,6 +83,22 @@ typedef i32					pos_t;
 */
 typedef char                *str;
 typedef void                fn_t;
+
+/*
+    Implment C Types when using -nostdlib -nostdinc
+*/
+#if defined(__TINYC__) || defined(__GNUC__)
+
+    #if !defined(_STDIO_H) || !defined(__GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION)
+        #define NULL                    ((void *)0)
+    #endif
+
+	/* Implementation of the following types from stdint.h */
+//    #if !defined(_STDINT_H) && !defined(__SIZE_TYPE__)
+		typedef unsigned long int		size_t;
+		typedef unsigned long int		uintptr_t;
+//    #endif
+#endif
 
 /* Global Function Declaraction */
 long _syscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);

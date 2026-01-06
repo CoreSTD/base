@@ -12,14 +12,11 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define __CLIBP__
 #include <clibp.h>
 #include <asm.h>
 
-#include <allocator.h>
-
 /* gcc_clibp */
-entry_t entry()
+int entry()
 {
     /* heap test */
 	println("Attempting to init heap...");
