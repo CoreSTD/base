@@ -25,7 +25,7 @@ fn req_memory()
 	if(!_HEAP_PAGE_) _HEAP_PAGE_ = _HEAP_PAGE_SZ_;
     if(__syscall__((long)_HEAP_, _HEAP_PAGE_, 0x1 | 0x2, 0, 0, 0, _SYS_MPROTECT) != 0)
     {
-        println("Segfault");
+        clibp_panic("Segfault");
         return;
     }
 }

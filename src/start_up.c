@@ -1,6 +1,6 @@
 #include "../headers/clibp.h"
 
-static void _mem_cpy(char *dest, const char *buffer, int len)
+static void _mem_cpy(string dest, const string buffer, i32 len)
 {
     for(int i = 0; i < len; i++)
     {
@@ -8,7 +8,7 @@ static void _mem_cpy(char *dest, const char *buffer, int len)
     }
 }
 
-static int _str_len(const char *buffer)
+static int _str_len(const string buffer)
 {
     int count = 0;
     for(int i = 0; buffer[i] != '\0'; i++)
@@ -19,7 +19,7 @@ static int _str_len(const char *buffer)
     return count;
 }
 
-static int get_cmd_info(char *buffer) {
+static int get_cmd_info(string buffer) {
     __syscall(2, (long)"/proc/self/cmdline", 0, 0, -1, -1, -1);
     register long open asm("rax");
     if(open <= 0)

@@ -3,12 +3,12 @@
 #include "../headers/asm.h"
 
 int __CLIBP_DEBUG__ = 0;
-fn __exit(int code)
+fn __exit(i32 code)
 {
 	__syscall(60, code, 0, 0, -1, -1, -1);
 }
 
-fn err_n_exit(const string buff, int code)
+fn err_n_exit(const string buff, i32 code)
 {
 	if(buff)
 		print(buff);
@@ -16,7 +16,7 @@ fn err_n_exit(const string buff, int code)
 	__syscall(60, code, 0, 0, -1, -1, -1);
 }
 
-int get_input(string dest, len_t count) {
+int get_input(string dest, i32 count) {
 	char BUFFER[count];
 	__syscall(_SYS_READ, 0, (long)BUFFER, count, -1, -1, -1);
 	register long bytes_read asm("rax");
@@ -25,7 +25,7 @@ int get_input(string dest, len_t count) {
 	return bytes_read;
 }
 
-fn ptr_to_str(ptr p, char *out)
+fn ptr_to_str(ptr p, string out)
 {
     static const char hex[] = "0123456789abcdef";
     uintptr_t v = (uintptr_t)p;
@@ -41,7 +41,7 @@ fn ptr_to_str(ptr p, char *out)
     out[2 + sizeof(uintptr_t) * 2] = '\0';
 }
 
-fn print_sz(const string buffer, int sz)
+fn print_sz(const string buffer, i32 sz)
 {
 	__syscall(_SYS_WRITE, 1, (long)buffer, sz, 0, 0, 0);
 }
@@ -53,7 +53,7 @@ fn printc(const char ch)
 	print(BUFF);
 }
 
-fn printi(int num)
+fn printi(i32 num)
 {
 	char BUFF[5] = {0};
 	BUFF[0] = '0' + num;

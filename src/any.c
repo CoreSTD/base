@@ -19,14 +19,14 @@ typedef struct
 
 const int ANY_META_SZ = sizeof(any_t);
 
-any any_allocate(len_t sz, len_t len)
+any any_allocate(len_t sz, i32 len)
 {
-	len_t num = sz ? sz * len : len;
+	i32 num = sz ? sz * len : len;
 	if(len == 0)
 		return NULL;
 
 	len += ANY_META_SZ;
-	any p = allocate(0, len);
+	any_t *p = allocate(0, len);
 	if(!p)
 		return NULL;
 
@@ -43,14 +43,14 @@ void *convert_to_type(any_t p)
 //	}
 }
 
-int any_cmp(any p, any v, len_t len)
+int any_cmp(any p, any v, i32 len)
 {
-	if(((char *)p - ANY_META_SZ - sizeof(int)) == 0x7C)
+	if(*(int *)((char *)p - ANY_META_SZ - sizeof(int)) == 0x7C)
 	{
 		clibp_panic("[ x ] error, invalid memory provided...!\n");
 	}
 
-	any_t n = (any)((char *)p - ANY_META_SZ);
+	any_t *n = (any_t *)((char *)p - ANY_META_SZ);
 //	switch(n->type)
 //	{
 //		case ANY_INT:

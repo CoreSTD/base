@@ -156,7 +156,7 @@ int 	get_args(char *argv[]);
 	    int     id;
 	} __meta__;
 
-	extern int                  HEAP_META_SZ;
+	extern const int            HEAP_META_SZ;
 	extern int                  HEAP_DEBUG;
 	extern int                  used_mem;
 
