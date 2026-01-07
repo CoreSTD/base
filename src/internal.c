@@ -8,7 +8,7 @@ fn __exit(int code)
 	__syscall(60, code, 0, 0, -1, -1, -1);
 }
 
-fn err_n_exit(const str buff, int code)
+fn err_n_exit(const string buff, int code)
 {
 	if(buff)
 		print(buff);
@@ -16,7 +16,7 @@ fn err_n_exit(const str buff, int code)
 	__syscall(60, code, 0, 0, -1, -1, -1);
 }
 
-int get_input(str dest, len_t count) {
+int get_input(string dest, len_t count) {
 	char BUFFER[count];
 	__syscall(_SYS_READ, 0, (long)BUFFER, count, -1, -1, -1);
 	register long bytes_read asm("rax");
@@ -41,7 +41,7 @@ fn ptr_to_str(ptr p, char *out)
     out[2 + sizeof(uintptr_t) * 2] = '\0';
 }
 
-fn print_sz(const str buffer, int sz)
+fn print_sz(const string buffer, int sz)
 {
 	__syscall(_SYS_WRITE, 1, (long)buffer, sz, 0, 0, 0);
 }
@@ -86,12 +86,12 @@ fn _printi(int num)
 	print(BUFF);
 }
 
-fn print(const str buff)
+fn print(const string buff)
 {
 	__syscall(1, 1, (unsigned long)buff, str_len(buff), -1, -1, -1);
 }
 
-fn println(const str buff)
+fn println(const string buff)
 {
 	__syscall(1, 1, (unsigned long)buff, str_len(buff), -1, -1, -1);
 	__syscall(1, 1, (unsigned long)"\n", 1, -1, -1, -1);

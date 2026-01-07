@@ -1,6 +1,6 @@
 #include "../../headers/clibp.h"
 
-int arr_contains(arr args, str needle)
+int arr_contains(arr args, string needle)
 {
 	if(!args || !needle)
         return -1;

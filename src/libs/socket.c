@@ -1,6 +1,6 @@
 #include "../../headers/clibp.h"
 
-_sock_t listen_tcp(const str ip, int port, int concurrent)
+_sock_t listen_tcp(const string ip, int port, int concurrent)
 {
 	if(!ip || port <= 0)
 		return (_sock_t){0};
@@ -76,7 +76,7 @@ _sock_t sock_accept(_sock_t sock, len_t len)
 	return s;
 }
 
-str sock_read(_sock_t sock)
+string sock_read(_sock_t sock)
 {
 	char BUFF[sock.buff_len];
 	__syscall(_SYS_READ, sock.fd, (long)BUFF, sock.buff_len, 0, 0, 0);
@@ -84,7 +84,7 @@ str sock_read(_sock_t sock)
 	int bytes = bts;
 	if(bytes > 0)
 	{
-		str buffer = allocate(0, bytes);
+		string buffer = allocate(0, bytes);
 		mem_cpy(buffer, BUFF, sock.buff_len);
 		return buffer;
 	}

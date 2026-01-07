@@ -75,7 +75,6 @@ typedef i32					pos_t;
     TODO; change str to string type
     TODO; change fn_t to fn
 */
-typedef char                *str;
 typedef void                fn_t;
 
 /*
@@ -110,15 +109,15 @@ int 	get_args(char *argv[]);
 	/* internal.c */
 	fn 		ptr_to_str(void *p, char *out);
 	fn 		__exit(int code);
-	fn 		print_sz(const str buffer, int sz);
+	fn 		print_sz(const string buffer, int sz);
 	fn		printc(const char ch);
 	fn 		printi(int num);
 	fn 		_printi(int value);
-	fn 		print(const str buff);
-	fn		println(const str buff);
-	fn 		printsz(const str buff, int sz);
-	fn 		printa(const str *buff);
-	fn 		err_n_exit(const str buff, int code);
+	fn 		print(const string buff);
+	fn		println(const string buff);
+	fn 		printsz(const string buff, int sz);
+	fn 		printa(const string *buff);
+	fn 		err_n_exit(const string buff, int code);
 #endif
 
 /*
@@ -132,7 +131,7 @@ int 	get_args(char *argv[]);
 	fn 		mem_cpy(any dest, any src, size_t size);
 	fn 		mem_set(any ptr, char ch, size_t size);
 
-	int 	get_input(str dest, len_t count);
+	int 	get_input(string dest, len_t count);
 #endif
 
 /*
@@ -180,18 +179,18 @@ int 	get_args(char *argv[]);
 	#define __sprintf(dest, format, ...) \
 		_sprintf(dest, format, (void *[]){__VA_ARGS__, 0});
 
-	fn_t 	_sprintf(str buffer, str format, any *args);
+	fn_t 	_sprintf(string buffer, string format, any *args);
 	fn_t 	istr(char *dest, int num);
-	len_t 	str_len(str buffer);
-	int   	stra(str src, const str sub);
-	bool	str_cmp(const str src, const str needle);
-	pos_t 	find_char(const str buff, const char ch, int match);
-	pos_t 	find_str(const str buff, const str needle);
+	len_t 	str_len(string buffer);
+	int   	stra(string src, const string sub);
+	bool	str_cmp(const string src, const string needle);
+	pos_t 	find_char(const string buff, const char ch, int match);
+	pos_t 	find_str(const string buff, const string needle);
 #endif
 
 #ifdef _CLIBP_ARR_H
 	typedef any *arr;
-	int 	arr_contains(arr args, str needle);
+	int 	arr_contains(arr args, string needle);
 #endif
 
 #ifdef _CLIBP_FILE_H
@@ -301,7 +300,7 @@ int 	get_args(char *argv[]);
 	} _sock_t;
 
 	typedef _sock_t *sock_t;
-	_sock_t listen_tcp(const str ip, int port, int concurrent);
+	_sock_t listen_tcp(const string ip, int port, int concurrent);
     int parse_ipv4(const char *ip, unsigned int *out);
     char *convert_ip(unsigned int ip);
     unsigned short _htons(unsigned short x);

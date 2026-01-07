@@ -1,6 +1,6 @@
 #include "../../headers/clibp.h"
 
-fn _sprintf(str buffer, str format, any *args)
+fn _sprintf(string buffer, string format, any *args)
 {
     int arg = 0, idx = 0;
     for(int i = 0; format[i] != '\0'; i++)
@@ -25,7 +25,7 @@ fn _sprintf(str buffer, str format, any *args)
     }
 }
 
-fn istr(str dest, int num)
+fn istr(string dest, int num)
 {
 	int temp = num, c = 0;
 	char BUFF[500] = {0};
@@ -47,17 +47,17 @@ fn istr(str dest, int num)
     }
 }
 
-str str_dup(const str buff)
+string str_dup(const string buff)
 {
 	int len = str_len(buff);
 
-	str buffer = (str)allocate(0, len);
+	string buffer = (string)allocate(0, len);
 	mem_cpy(buffer, buff, len);
 
 	return buffer;
 }
 
-len_t str_len(const str buffer)
+len_t str_len(const string buffer)
 {
 	if(!buffer)
 		return 0;
@@ -70,7 +70,7 @@ len_t str_len(const str buffer)
 }
 
 // String Compare
-bool str_cmp(const str src, const str needle)
+bool str_cmp(const string src, const string needle)
 {
 	if(!src || !needle)
 		return false;
@@ -91,7 +91,7 @@ bool str_cmp(const str src, const str needle)
 }
 
 // String Append
-int stra(str buff, const str sub) {
+int stra(string buff, const string sub) {
 	if(!buff || !sub)
 		return 0;
 
@@ -105,7 +105,7 @@ int stra(str buff, const str sub) {
 }
 
 // Find Char (to find multiple, increament match each call until -1 or set to 0 to just find 1)
-pos_t find_char(const str buff, const char ch, int match)
+pos_t find_char(const string buff, const char ch, int match)
 {
 	if(!buff || ch == 0)
 		return -1;
@@ -124,7 +124,7 @@ pos_t find_char(const str buff, const char ch, int match)
 }
 
 // Find String (to find multiple, increament match each call until -1)
-pos_t find_str(const str buff, const str needle)
+pos_t find_str(const string buff, const string needle)
 {
     int len = str_len(buff);
     int slen = str_len(needle);
