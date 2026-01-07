@@ -1,3 +1,6 @@
+/*
+	Cmdline parser for clib+ compiler-linker test
+*/
 #include <clibp.h>
 
 sArr ARGV;
@@ -119,6 +122,7 @@ int entry(int argc, char *argv[])
 		arr_contains(ARGV, ARGC, "--tcc") ? "tcc" : "gcc"
 	);
 
+	// user must provide a main script before -c or -o then the rest of the filie
 	if(arr_contains(ARGV, ARGC, "-c"))
 	{
 		// exit here since clibp already compile to object file
