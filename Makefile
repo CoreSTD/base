@@ -73,11 +73,11 @@ move:
 	chmod 777 /bin/gcc_clibp
 
 count:
-	wc -l t.c \
+	wc \
+	tests/*.c \
 	src/*.c \
 	src/stdlib/*.c \
 	headers/*.h \
-	headers/stdlib/*.h
 
 #
 # Compile the current arch core ASM lib for clib+ built-in

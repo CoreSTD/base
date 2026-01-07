@@ -93,7 +93,7 @@ static sArr get_all_object_files()
 	return n;
 }
 
-bool arr_contains(array arr, i32 size, string value)
+bool __arr_contains(sArr arr, i32 size, string value)
 {
 	for(i32 i = 0; i < size; i++)
 	{
@@ -104,34 +104,62 @@ bool arr_contains(array arr, i32 size, string value)
 	return false;
 }
 
+/* gcc_clibp t.c -o t */
 int entry(int argc, char *argv[])
 {
-	if(argc < 2)
+	if(argc < 3)
 	{
-		println("[ x ] error, unable to get cmdline args");
+		println("[ x ] error, invalid arguments provided\nUsage: gcc_clibp <file> <-c/-o> <output_file>\nUse '--h' for a list of arguments");
 		return 1;
 	}
 
 	ARGC = argc;
 	ARGV = argv;
 	string COMPILE_CMD = allocate(0, 1024);
-	i32 idx = 0;
+	i32 idx = 0, skip = 0;
 
+	skip += 2;
 	string compiler = get_compiler_type_cmd(
 		COMPILE_CMD,
-		arr_contains(ARGV, ARGC, "--tcc") ? "tcc" : "gcc"
+		__arr_contains(ARGV, ARGC, "--tcc") ? "tcc" : "gcc"
 	);
 
-	// user must provide a main script before -c or -o then the rest of the filie
-	if(arr_contains(ARGV, ARGC, "-c"))
+	// user must provide a main script before -c or -o then the rest of the files
+	if(__arr_contains(ARGV, ARGC, "-c"))
 	{
 		// exit here since clibp already compile to object file
+		skip++;
 	}
 
-	if(arr_contains(ARGV, ARGC, "--strip"))
+	if(__arr_contains(ARGV, ARGC, "--strip"))
 	{
 		// strip the binary
 		// CMD: strip <file>
+		skip++;
 	}
+
+	if(__arr_contains(ARGV, ARGC, "--upx"))
+	{
+		// compress with upx
+		// CMD: upx -9 <file>
+		skip++;
+	}
+
+	if(skip + 1 >= ARGC)
+		return 1;
+
+	int file_len = str_len(ARGV[skip + 1]);
+	if(file_len > 2 && ARGV[skip + 1][file_len - 1] == 'c' && ARGV[skip + 1][file_len - 2] == '.')
+	{
+		println("C File");
+	}
+
 	return 0;
+}
+
+/* gcc t.c -o t -lclibp */
+int main(int argc, char *argv[])
+{
+	int exit = entry(argc, argv);
+	return exit;
 }

@@ -53,7 +53,7 @@ typedef unsigned long long 	u64;
 typedef char				*string;
 
 /* general array */
-typedef u32					*array;
+typedef i32					*array;
 
 /* int array and char array */
 typedef i32					*iArr;
@@ -189,8 +189,7 @@ int 	get_args(char *argv[]);
 #endif
 
 #ifdef _CLIBP_ARR_H
-	typedef any *arr;
-	int 	arr_contains(arr args, string needle);
+	int 	arr_contains(sArr args, string needle);
 #endif
 
 #ifdef _CLIBP_FILE_H
