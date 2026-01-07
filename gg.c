@@ -1,6 +1,6 @@
 #include <clibp.h>
 
-/* GCC with default flags */
+/* Compiler types supported with clib+ */
 #define COMPILER_TYPE_COUNT 3
 string COMPILER_TYPES[] = {
     "/usr/bin/gcc/ -nostdlib -ffreestanding -c",

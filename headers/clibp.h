@@ -117,7 +117,7 @@ int 	get_args(char *argv[]);
 	fn		println(const string buff);
 	fn 		printsz(const string buff, int sz);
 	fn 		printa(const string *buff);
-	fn 		err_n_exit(const string buff, int code);
+	ptr		to_heap(ptr p, i32 sz);
 #endif
 
 /*

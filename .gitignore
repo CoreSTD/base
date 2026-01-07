@@ -3,6 +3,7 @@ t
 *.a
 *.swp
 build/*
+loader/*.o
 *.save
 a.out
 *.a

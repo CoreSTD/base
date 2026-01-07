@@ -5,11 +5,12 @@
 *   GCC-CLIBP LOADER
 *   @Reason: To debug on linux raw binaries used for making OS(s)
 */
-// Loader's Main Function Declaration
 #include <clibp.h>
-int start_up();
+
+// Loader's Main Function Declaration
+int on_start();
 int entry();
-/* Declare Function from build/lib.o */
+int on_exit();
 
 /* Declare Function from build/syscall.o */
 void __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long arg5, long arg6);
@@ -101,7 +102,14 @@ void _start() {
 
 	set_heap_sz(4096 * 1);
 	init_mem();
-    int code = entry(__ARGC__, __ARGV__);
+
+	int start = on_start();
+    if(!start)
+        __syscall(60, 1, -1, -1, -1, -1, -1);
+
+    entry(__ARGC__, __ARGV__);
+    int exit = on_exit();
+
     uninit_mem();
-    __syscall(60, code, -1, -1, -1, -1, -1);
+    __syscall(60, exit, -1, -1, -1, -1, -1);
 }

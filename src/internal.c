@@ -8,14 +8,6 @@ fn __exit(i32 code)
 	__syscall(60, code, 0, 0, -1, -1, -1);
 }
 
-fn err_n_exit(const string buff, i32 code)
-{
-	if(buff)
-		print(buff);
-
-	__syscall(60, code, 0, 0, -1, -1, -1);
-}
-
 int get_input(string dest, i32 count) {
 	char BUFFER[count];
 	__syscall(_SYS_READ, 0, (long)BUFFER, count, -1, -1, -1);
@@ -97,3 +89,11 @@ fn println(const string buff)
 	__syscall(1, 1, (unsigned long)"\n", 1, -1, -1, -1);
 }
 
+ptr to_heap(ptr p, i32 sz)
+{
+	ptr pointer = allocate(0, sz);
+	mem_cpy(pointer, p, sz);
+
+	((string)pointer)[sz] = '\0';
+	return pointer;
+}
