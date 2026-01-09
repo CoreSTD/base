@@ -22,21 +22,7 @@ int get_input(string dest, i32 count) {
 	return bytes_read;
 }
 
-fn ptr_to_str(ptr p, string out)
-{
-    static const char hex[] = "0123456789abcdef";
-    uintptr_t v = (uintptr_t)p;
-
-    out[0] = '0';
-    out[1] = 'x';
-
-    for (int i = (sizeof(uintptr_t) * 2) - 1; i >= 0; i--) {
-        out[2 + ((sizeof(uintptr_t) * 2 - 1) - i)] =
-            hex[(v >> (i * 4)) & 0xF];
-    }
-
-    out[2 + sizeof(uintptr_t) * 2] = '\0';
-}
+//moved to str.c
 
 fn print_sz(const string buffer, i32 sz)
 {
@@ -83,34 +69,36 @@ fn _printi(int num)
 	print(buff);
 }
 
-string int_to_str(int num)
-{
-	int temp = num, c = 0;
-	char buff[150];
-	if(num == 0)
-	{
-		buff[0] = '0';
-		buff[1] = '\0';
-		return str_dup(buff);
-	}
 
-	while(temp)
-	{
-		buff[c++] = '0' + (temp % 10);
-		temp /= 10;
-	}
-
-	int g = c;
-	for(int i = 0; i < c; i++)
-	{
-		char t = buff[i], n = buff[--c];
-		buff[i] = n;
-		buff[c] = t;
-	}
-
-	buff[g] = '\0';
-	return str_dup(buff);
-}
+//moved to str.c
+//string int_to_str(int num)
+//{
+//	int temp = num, c = 0;
+//	char buff[150];
+//	if(num == 0)
+//	{
+//		buff[0] = '0';
+//		buff[1] = '\0';
+//		return str_dup(buff);
+//	}
+//
+//	while(temp)
+//	{
+//		buff[c++] = '0' + (temp % 10);
+//		temp /= 10;
+//	}
+//
+//	int g = c;
+//	for(int i = 0; i < c; i++)
+//	{
+//		char t = buff[i], n = buff[--c];
+//		buff[i] = n;
+//		buff[c] = t;
+//	}
+//
+//	buff[g] = '\0';
+//	return str_dup(buff);
+//}
 
 fn print(const string buff)
 {
