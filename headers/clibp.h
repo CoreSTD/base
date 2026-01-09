@@ -42,7 +42,11 @@ extern int __CLIBP_DEBUG__;
 
 typedef signed char			i8;
 typedef signed short int	i16;
+
+#define i32_MIN 			-0x80000000
+#define i32_MAX 			0x7FFFFFFF
 typedef signed int 			i32;
+
 typedef signed long long 	i64;
 
 typedef unsigned char 		u8;
@@ -171,6 +175,14 @@ fn        	pfree(any ptr, int clean);
 __meta__* __get_meta__(any ptr);
 #endif
 
+/*
+	[ src/stdlib/char.c ]
+*/
+i32		count_int_digits(i32 num);
+
+/*
+	[ src/stdlib/char.c ]
+*/
 #ifdef _CLIBP_CHAR_H
 i32 	is_ascii(const char c);
 i32 	is_ascii_alpha(const char c);
@@ -178,6 +190,7 @@ i32 	count_char(const string buffer, const char ch);
 i32 	find_char(const string buffer, const char ch);
 i32 	find_char_at(const string buffer, const char ch, int match);
 #endif
+
 
 /* stdlib/str.c */
 #ifdef _CLIBP_STR_H

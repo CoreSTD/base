@@ -55,6 +55,7 @@ clean:
 #
 reset:
 	rm -rf build
+	rm -rf loader/*.o
 
 #
 # Create build dir
