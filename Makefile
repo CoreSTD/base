@@ -70,7 +70,7 @@ move:
 	cp -r headers/* /usr/local/include
 	cp build/libclibp.a /usr/lib
 	cp gcc_clibp /bin
-	chmod 777 /bin/gcc_clibp
+	chmod x+ /bin/gcc_clibp
 
 count:
 	wc -l \
