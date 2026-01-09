@@ -103,13 +103,11 @@ int 	get_args(char* argv[]);
 
 /* internal.c */
 fn		toggle_debug_mode();
-fn 		ptr_to_str(void* p, char* out);
 fn 		__exit(int code);
 fn 		print_sz(const string buffer, int sz);
 fn		printc(const char ch);
 fn 		printi(int num);
 fn 		_printi(int value);
-string	int_to_str(int num);
 fn 		print(const string buff);
 fn		println(const string buff);
 fn 		printsz(const string buff, int sz);
@@ -186,6 +184,8 @@ i32 	find_char_at(const string buffer, const char ch, int match);
 #define __sprintf(dest, format, ...) \
 		_sprintf(dest, format, (void *[]){__VA_ARGS__, 0});
 
+fn 		ptr_to_str(void* p, char* out);
+string	int_to_str(int num);
 fn 		_sprintf(string buffer, string format, any* args);
 fn 		istr(char* dest, int num);
 len_t 	str_len(string buffer);

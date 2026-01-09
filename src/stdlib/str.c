@@ -1,5 +1,51 @@
 #include "../../headers/clibp.h"
 
+fn ptr_to_str(ptr p, string out)
+{
+    static const char hex[] = "0123456789abcdef";
+    uintptr_t v = (uintptr_t)p;
+
+    out[0] = '0';
+    out[1] = 'x';
+
+    for (int i = (sizeof(uintptr_t) * 2) - 1; i >= 0; i--) {
+        out[2 + ((sizeof(uintptr_t) * 2 - 1) - i)] =
+            hex[(v >> (i * 4)) & 0xF];
+    }
+
+    out[2 + sizeof(uintptr_t) * 2] = '\0';
+}
+
+string int_to_str(int num)
+{
+	int temp = num, c = 0;
+	char buff[150];
+	if(num == 0)
+	{
+		buff[0] = '0';
+		buff[1] = '\0';
+		return str_dup(buff);
+	}
+
+	while(temp)
+	{
+		buff[c++] = '0' + (temp % 10);
+		temp /= 10;
+	}
+
+	int g = c;
+	for(int i = 0; i < c; i++)
+	{
+		char t = buff[i], n = buff[--c];
+		buff[i] = n;
+		buff[c] = t;
+	}
+
+	buff[g] = '\0';
+	return str_dup(buff);
+}
+
+
 fn _sprintf(string buffer, string format, any *args)
 {
     int arg = 0, idx = 0;
@@ -22,7 +68,7 @@ fn _sprintf(string buffer, string format, any *args)
            	else
            		buffer[idx++] = t + '0';
 
-           	pfree(num);
+           	pfree(num, 1);
             arg++;
             i++;
             continue;
@@ -34,7 +80,8 @@ fn _sprintf(string buffer, string format, any *args)
 				buffer[idx++] = ptr_buff[c];
 
 			arg++;
-			i += 2;
+			i++;
+			continue;
         }
 
         buffer[idx++] = format[i];
@@ -46,31 +93,32 @@ fn istr(string dest, int num)
 {
 	int temp = num, c = 0;
 	char BUFF[500] = {0};
-  while(temp)
+    while(temp)
     {
     	BUFF[c++] = '0' + (temp % 10);
 		temp /= 10;
 	}
 
-  for(int i = 0; i < c; i++)
-  {
-  	char t = BUFF[i], n = BUFF[--c];
-      BUFF[i] = n;
-      BUFF[c] = t;
-  }
+    for(int i = 0; i < c; i++)
+    {
+    	char t = BUFF[i], n = BUFF[--c];
+        BUFF[i] = n;
+        BUFF[c] = t;
+    }
 
-  for(int i = 0; BUFF[i] != '\0'; i++) {
-  	dest[i] = BUFF[i];
-  }
+    for(int i = 0; BUFF[i] != '\0'; i++) {
+    	dest[i] = BUFF[i];
+    }
 }
 
 string str_dup(const string buff)
 {
 	int len = str_len(buff);
 
-	string buffer = (string)allocate(0, len);
+	string buffer = (string)allocate(0, len + 1);
 	mem_cpy(buffer, buff, len);
 
+	buffer[len] = '\0';
 	return buffer;
 }
 
@@ -95,10 +143,10 @@ bool str_cmp(const string src, const string needle)
 	len_t len = str_len(src);
 	len_t len2 = str_len(needle);
 
-	if(len2 > len)
+	if(len2 > len || len2 < len)
 		return false;
 
-	for(int i = 0; i < len2; i++)
+	for(int i = 0; i < len; i++)
 	{
 		if(src[i] != needle[i])
 			return false;
@@ -108,7 +156,7 @@ bool str_cmp(const string src, const string needle)
 }
 
 // String Append
-int stra(string buff, const string sub) {
+int str_append(const string buff, const string sub) {
 	if(!buff || !sub)
 		return 0;
 
@@ -121,28 +169,12 @@ int stra(string buff, const string sub) {
 	return 1;
 }
 
-// Find Char (to find multiple, increament match each call until -1 or set to 0 to just find 1)
-pos_t find_char(const string buff, const char ch, int match)
-{
-	if(!buff || ch == 0)
-		return -1;
-
-	len_t len = str_len(buff);
-	for(int i = 0; i < len; i++)
-	{
-		if(buff[i] == '\0')
-			break;
-
-		if(buff[i] == ch && i == match)
-			return i;
-	}
-
-	return -1;
-}
-
 // Find String (to find multiple, increament match each call until -1)
-pos_t find_str(const string buff, const string needle)
+pos_t find_string(const string buff, const string needle)
 {
+	if(!buff || needle)
+    	return -1;
+
     int len = str_len(buff);
     int slen = str_len(needle);
     for(int i = 0; i < len; i++)
@@ -150,7 +182,7 @@ pos_t find_str(const string buff, const string needle)
         int chk = 0;
         for(int c = 0; c < slen; c++) {
             if(buff[i + c] != needle[c])
-                return 0;
+				break;
             else
                 chk = 1;
         }
@@ -161,3 +193,57 @@ pos_t find_str(const string buff, const string needle)
 
     return 0;
 }
+
+sArr split_lines(const string buffer, int *idx)
+{
+     return split_string(buffer, '\n', idx);
+}
+
+sArr split_string(const string buffer, const char ch, int *idx)
+{
+    if(!buffer)
+        return NULL;
+
+    i32 len = str_len(buffer);
+        i32 lines = count_char(buffer, '\n');
+    sArr arr = allocate(sizeof(string), lines + 1);
+    *idx = 0;
+    int _len = 0;
+
+    char LINE[len];
+    for(int i = 0; i < len; i++)
+    {
+        if(buffer[i] == '\0')
+            break;
+
+        if(buffer[i] == ch)
+        {
+            int n = str_len(LINE);
+            if(n == 0)
+            {
+                LINE[0] = ' ';
+                LINE[1] = '\0';
+            }
+
+            arr[(*idx)++] = str_dup(LINE);
+
+            sArr new_arr = to_heap(arr, sizeof(string) * ((*idx) + 1));
+            pfree(arr, 1);
+            arr = new_arr;
+            if(!arr) println("ERR\n");
+            arr[*idx] = NULL;
+            LINE[0] = '\0';
+            _len = 0;
+            continue;
+        }
+
+        LINE[_len++] = buffer[i];
+        LINE[_len] = '\0';
+    }
+
+    if(*idx > 0)
+        return arr;
+
+    pfree(arr, 1);
+    return NULL;
+  }

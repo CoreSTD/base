@@ -22,8 +22,6 @@ int get_input(string dest, i32 count) {
 	return bytes_read;
 }
 
-//moved to str.c
-
 fn print_sz(const string buffer, i32 sz)
 {
 	__syscall__(1, (long)buffer, sz, 0, 0, 0, _SYS_WRITE);
@@ -68,37 +66,6 @@ fn _printi(int num)
 
 	print(buff);
 }
-
-
-//moved to str.c
-//string int_to_str(int num)
-//{
-//	int temp = num, c = 0;
-//	char buff[150];
-//	if(num == 0)
-//	{
-//		buff[0] = '0';
-//		buff[1] = '\0';
-//		return str_dup(buff);
-//	}
-//
-//	while(temp)
-//	{
-//		buff[c++] = '0' + (temp % 10);
-//		temp /= 10;
-//	}
-//
-//	int g = c;
-//	for(int i = 0; i < c; i++)
-//	{
-//		char t = buff[i], n = buff[--c];
-//		buff[i] = n;
-//		buff[c] = t;
-//	}
-//
-//	buff[g] = '\0';
-//	return str_dup(buff);
-//}
 
 fn print(const string buff)
 {
