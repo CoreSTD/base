@@ -69,8 +69,9 @@ fn _printi(int num)
 	print(buff);
 }
 
+//ptr_to_str moved to str.c
 
-//moved to str.c
+//this ill been moved to str.c!
 //string int_to_str(int num)
 //{
 //	int temp = num, c = 0;
