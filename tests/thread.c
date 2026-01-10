@@ -10,7 +10,6 @@ typedef struct
 	i32		ttid;
 } thread;
 
-
 thread start_thread(void *(*fnc)(), ptr p, int wait)
 {
 	if(!fnc)
@@ -43,7 +42,8 @@ thread start_thread(void *(*fnc)(), ptr p, int wait)
 	}
 
 	t.ttid = __syscall__(0, 0, 0, -1, -1, -1, _SYS_GETTID);
-	print("PID: "), _printi(t.pid);
+	__sprintf(output, "PID: %d\n", (void *)&t.pid);
+	print(output);
 
 	return t;
 }
@@ -67,10 +67,13 @@ void execute(char *app, char **args)
 
 fn thread_kill(thread *t)
 {
-	if(__CLIBP_DEBUG__)
-		print("Killing thread: "), _printi(t->pid), print("\n");
+	char output[100];
+	__sprintf(output, "Killing thread: %d\n", (void *)&t->pid);
+	if(__CLIBP_DEBUG__) {
+		print(output);
+	}
 
-	print_args((char *[]){"Killing: ", (char *)t->arguments, 0});
+		print(output);
 	if(t->pid > 0) {
 		__syscall__(t->pid, 9, 0, 0, 0, 0, _SYS_KILL);
 		__syscall__(t->pid, 0, 0, -1, -1, -1, _SYS_WAIT4);
@@ -79,9 +82,9 @@ fn thread_kill(thread *t)
 
 void *thread_fn(char *dick)
 {
-	struct sleep_t ts = {1, 0};
+	struct sleep_t ts = {0, 500000000};
 	char buff[100];
-	for(int i = 0; i < 15; i++) {
+	for(int i = 0; i < 20; i++) {
 		__sprintf(buff, "[%d]: Thread Arg: %s", (void *)&i, dick);
 		println(buff);
 		__syscall__((long)&ts, 0, 0, 0, 0, 0, _SYS_NANOSLEEP);
@@ -91,9 +94,8 @@ void *thread_fn(char *dick)
 
 int entry()
 {
-//	__CLIBP_DEBUG__ = 1;
-	thread first = start_thread(thread_fn, "dick", 0);
-	thread second = start_thread(thread_fn, "fag", 0);
+	thread first = start_thread(thread_fn, "arg_1", 0);
+	thread second = start_thread(thread_fn, "arg_2", 0);
 
 	println("Waiting");
     struct sleep_t ts = {6, 0};
@@ -109,9 +111,4 @@ int entry()
 		thread_kill(&second);
 
    	return 0;
-}
-
-int main()
-{
-	return entry();
 }
