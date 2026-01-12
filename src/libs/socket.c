@@ -143,7 +143,7 @@ char *convert_ip(unsigned int ip) {
     return buf;
 }
 
-unsigned short _htons(unsigned short x)
+u8 _htons(u8 x)
 {
 	return ((x & 0xFF) << 8) | ((x & 0xFF00) >> 8);
 }
