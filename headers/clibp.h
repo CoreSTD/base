@@ -239,7 +239,7 @@ i32		count_int_digits(i32 num);
 #endif
 
 #ifdef _CLIBP_FILE_H
-	typedef unsigned int fd_t;
+	typedef u32 fd_t;
 
 	typedef enum FILE_MODE {
 		O_RDONLY 	= 0,		// Read
@@ -317,69 +317,82 @@ i32		count_int_digits(i32 num);
 #endif
 
 #ifdef _CLIBP_SOCKET_H
-	#define AF_INET         	2
-	#define SOL_SOCKET      	1
-	#define SO_REUSEADDR    	2
-	#define SO_RCVTIMEO 		20
-
-	struct sockaddr_un {
-	    u16  					sun_family;
-	    char 					sun_path[108];
-	};
+	#define AF_INET         2
+	#define SOL_SOCKET      1
+	#define SO_REUSEADDR    2
+	#define SO_RCVTIMEO 	20
 
 	typedef struct {
-	    u16 					sin_family;
-	    u16 					sin_port;
+	    u16  		sun_family;
+	    char 		sun_path[108];
+	} _sockaddr_un;
+
+	typedef struct {
+	    u16 		sin_family;
+	    u16 		sin_port;
 	    struct {
-			u32 s_addr;
-		} 						sin_addr;
-	    u8 						sin_zero[8];
+			u32 	s_addr;
+		} 			sin_addr;
+	    u8 			sin_zero[8];
 	} _sockaddr_in;
 
 	typedef _sockaddr_in addr_in;
 
-	struct sockaddr_in6{
-	    u16 					sin6_family;
-	    u16 					sin6_port;
-	    i32 					sin6_flowinfo;
+	typedef struct {
+	    u16 		sin6_family;
+	    u16 		sin6_port;
+	    i32 		sin6_flowinfo;
 	    struct {
-			unsigned char s6_addr[16];
-		} 						sin6_addr;
-	    i32 					sin6_scope_id;
-	};
+			u8 		s6_addr[16];
+		} 			sin6_addr;
+	    i32 		sin6_scope_id;
+	} _sockaddr_in6;
 
 	typedef struct {
-		int             				fd;
-		_sockaddr_in					addr;
+		int         fd;
+		addr_in		addr;
 
-		int             				buff_len;
+		int			buff_len;
 	} _sock_t;
 
 	typedef _sock_t sock;
 	typedef _sock_t *sock_t;
 
-	sock_t listen_tcp(const string ip, int port, int concurrent);
-	sock_t sock_accept(sock_t sock, len_t len);
-	int sock_write(sock_t sock, string buffer);
-	string sock_read(sock_t sock);
-	int parse_ipv4(const char* ip, unsigned int* out);
-	char* convert_ip(unsigned int ip);
-	unsigned short _htons(unsigned short x);
-	unsigned int _htonl(unsigned int x);
-	fn sock_close(sock_t);
+	sock_t 		listen_tcp(const string ip, int port, int concurrent);
+	sock_t 		sock_accept(sock_t sock, len_t len);
+	int 		sock_write(sock_t sock, string buffer);
+	string 		sock_read(sock_t sock);
+	int 		parse_ipv4(const char* ip, u32 *out);
+	char* 		convert_ip(u32 ip);
+	u8 			_htons(u8 x);
+	u32 		_htonl(u32 x);
+	fn 			sock_close(sock_t);
 #endif
 
 #ifdef _CLIBP_THREAD_H
 	typedef struct
 	{
-		ptr 	(*fnc)();
-		ptr		arguments;
-		i8 		wait;
-		i8 		finished;
-		i32		pid;
-		i32		ttid;
-	} thread;
-	
-	thread start_thread(void *(*fnc)(), ptr p, int wait);
-	fn thread_kill(thread *t);
+		ptr 		(*fnc)();
+		ptr			arguments;
+		i8 			wait;
+		i8 			finished;
+		i32			pid;
+		i32			ttid;
+	} _thread;
+//-rwxr-xr-x 1 root root 709720 Jan 12 02:51 /usr/local/bin/zc
+	typedef _thread 	thread;
+	typedef thread 		*thread_t;
+	typedef thread 		**threads_t;
+
+	typedef struct
+	{
+		threads_t	threads;
+		int			idx;
+	} gthread;
+
+	gthread 	init_group_thread();
+	bool 		append_thread(gthread *g, thread_t t);
+
+	thread 		start_thread(void *(*fnc)(), ptr p, int wait);
+	fn 			thread_kill(thread_t t);
 #endif

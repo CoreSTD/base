@@ -39,8 +39,6 @@ string int_to_str(int num)
 	}
 
 	if (neg) buff[i++] = '-';
-
-	// reverse
 	for (int j = 0; j < i / 2; j++) {
 		char t = buff[j];
 		buff[j] = buff[i - j - 1];

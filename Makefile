@@ -110,8 +110,10 @@ cloader:
 	rm gcc_clibp.o
 
 test_run:
-	sudo make && ./gcc_clibp tests/heap.c -o t && ./t
-	c99 tests/heap.c -o t -lclibp && ./t
+	gclibp tests/heap.c -o heap && ./heap
+	gclibp tests/file.c -o file && ./file
+	gclibp tests/thread.c -o thread && ./thread
+#	gclibp tests/tcp_socket.c -o tcp && ./tcp
 
 riscv-gcc:
 	mkdir -p build
