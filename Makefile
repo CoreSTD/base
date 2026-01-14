@@ -80,7 +80,12 @@ count:
 	src/c/stdlib/*.c \
 	headers/*.h \
 	src/asm/*.asm
-
+#
+# Compile ASM libs
+#
+compile_asm:
+	nasm -f elf32 src/asm/x86.asm -o build/x86.o
+	nasm -f elf64 src/asm/x86_64.asm -o build/x86_64.o
 #
 # Compile the current arch core ASM lib for clib+ built-in
 # Merge clib+ built-in lib for the compiler and another for external use with other compilers
