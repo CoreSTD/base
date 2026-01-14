@@ -2,7 +2,7 @@
 *
 *	[ clib+ ]
 *
-*	- An alternative minimal C backend ( -nostdlib )
+*	- An alternative minimal C backend ( -nostdlib -nostdinc )
 *
 */
 #pragma once
@@ -151,7 +151,7 @@ int 	get_input(string dest, len_t count);
 	#if defined(_C_MALLOC_ALTERNATIVE)
 		#define malloc allocate
 	#endif
-	
+
 	#define PROT_READ   	0x1
 	#define PROT_WRITE		0x2
 	#define PROT_EXEC   	0x4
@@ -179,7 +179,6 @@ int 	get_input(string dest, len_t count);
 	} __meta__;
 
 	extern const int            HEAP_META_SZ;
-	extern int                  HEAP_DEBUG;
 	extern int                  used_mem;
 
 	fn 			set_heap_sz(int n);
@@ -344,6 +343,7 @@ i32		count_int_digits(i32 num);
 #endif
 
 #ifdef _CLIBP_SOCKET_H
+	
 	#define AF_INET         2
 	#define SOL_SOCKET      1
 	#define SO_REUSEADDR    2
@@ -391,7 +391,7 @@ i32		count_int_digits(i32 num);
 	string 		sock_read(sock_t sock);
 	int 		parse_ipv4(const char* ip, u32 *out);
 	char* 		convert_ip(u32 ip);
-	u8 			_htons(u8 x);
+	u16			_htons(u16 x);
 	u32 		_htonl(u32 x);
 	fn 			sock_close(sock_t);
 #endif

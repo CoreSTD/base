@@ -2,9 +2,6 @@
 
 sock_t listen_tcp(const string ip, int port, int concurrent)
 {
-	if(port <= 0)
-		return NULL;
-
     long sock = __syscall__(AF_INET, 1, 0, 0, 0, 0, _SYS_SOCKET);
     if (sock < 0)
 		clibp_panic("error, unable to create a socket...!");
@@ -31,7 +28,10 @@ sock_t listen_tcp(const string ip, int port, int concurrent)
 
     /* listen */
     ret = __syscall__(sock, concurrent, 0, 0, 0, 0, _SYS_LISTEN);
-
+	if(ret < 0)
+	{
+		clibp_panic("error, unable to listen to socket...!");
+	}
 	sock_t socket = allocate(0, sizeof(_sock_t));
 	socket->fd = sock;
 	socket->addr = addr;
@@ -41,9 +41,9 @@ sock_t listen_tcp(const string ip, int port, int concurrent)
 
 sock_t sock_accept(sock_t server, len_t len)
 {
-	#if defined(___x86___) || defined(__riscv)
+	#if defined(__riscv)
 		long client_fd = __syscall__(server->fd, 0, 0, -1, -1, -1, _SYS_ACCEPT4);
-	#elif defined(__x86_64__)
+	#elif defined(__x86__) || defined(__x86_64__)
 		long client_fd = __syscall__(server->fd, 0, 0, -1, -1, -1, _SYS_ACCEPT);
 	#endif
 
@@ -143,7 +143,7 @@ char *convert_ip(unsigned int ip) {
     return buf;
 }
 
-u8 _htons(u8 x)
+unsigned short _htons(unsigned short x)
 {
 	return ((x & 0xFF) << 8) | ((x & 0xFF00) >> 8);
 }

@@ -12,13 +12,14 @@ void strip_input(string buffer, int *length)
 
 int entry()
 {
-	sock_t server = listen_tcp(NULL, 50, 999);
-	if(server->fd < 0) println("FAILED\n");
+	toggle_debug_mode();
+	sock_t server = listen_tcp(NULL, 420, 999);
+	if(!server) println("ERROR");
 
-	println("Listening....");
 	sock_t client;
 	while(1)
 	{
+		println("Listening");
 		if(!(client = sock_accept(server, 1024)))
 			continue;
 

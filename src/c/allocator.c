@@ -40,7 +40,7 @@ fn init_mem() {
     // Clear the heap to mark all memory as free
     mem_set(_HEAP_, 1, _HEAP_PAGE_);
 
-    if (HEAP_DEBUG || __CLIBP_DEBUG__)
+    if (HEAP_DEBUG)
         print("[ + ] Heap initialized!\n");
 }
 
@@ -81,7 +81,7 @@ any allocate(int sz, int len) {
 
     used_mem += mem_needed;
 
-	if(HEAP_DEBUG || __CLIBP_DEBUG__)
+	if(HEAP_DEBUG)
 	{
 		char buff[100];
 		ptr_to_str(ptr, buff);
@@ -116,7 +116,7 @@ fn pfree(any ptr, int clean)
 
     used_mem -= total;
 
-	if(HEAP_DEBUG || __CLIBP_DEBUG__)
+	if(HEAP_DEBUG)
 	{
     	char buff[100];
     	ptr_to_str(m, buff);
@@ -126,7 +126,7 @@ fn pfree(any ptr, int clean)
 
 fn uninit_mem()
 {
-	if(HEAP_DEBUG || __CLIBP_DEBUG__)
+	if(HEAP_DEBUG)
 		println("[ + ] Uninitializing");
 	__syscall__((long)_HEAP_, _HEAP_PAGE_, 0, 0, 0, 0, _SYS_MUNMAP);
 }

@@ -1,3 +1,4 @@
+#define __CLIBP_DEBUG__
 #include <clibp.h>
 #include <stdbool.h>
 
@@ -69,64 +70,63 @@ typedef enum {
     LOOP_DETECTED                   = 508,
     NOT_EXTENDED                    = 510,
     NETWORK_AUTHENTICATION_REQUIRED = 511
-} http_status_code;
+} status_code;
 
 typedef enum
 {
-	_rNULL 				= 0,
-	_rGET 				= 1,
-	_rPOST 				= 2,
-	_rHEAD 				= 3
+	_rNULL 			= 0,
+	_rGET 			= 1,
+	_rPOST 			= 2,
+	_rHEAD 			= 3
 } request_t;
 
 typedef struct
 {
-	string				name;
-	string				path;
-	handler_t			handle;
+	string			name;
+	string			path;
+	handler_t		handle;
 
-	bool				parse_status_code;
-	bool				parse_headers;
-	bool				code;
+	bool			parse_status_code;
+	bool			parse_headers;
+	bool			code;
 } _route;
 
-typedef _route 			route;
-typedef _route 			*route_t;
-typedef _route 			**rArr;
+typedef _route 		route;
+typedef _route 		*route_t;
+typedef _route 		**rArr;
 
 typedef struct
 {
-	sock_t				socket;
-	request_t			type;
-	http_status_code	status;
-	string				path;
-	string				http_version;
+	sock_t			socket;
+	request_t		type;
+	status_code		status;
+	string			path;
+	string			http_version;
 
-//	map_t				headers;
-//	map_t				post;
+//	map_t			headers;
+//	map_t			post;
 
-	string 				content;
-	sArr				lines;
-	i32					body_line;
-	thread_t			thread;
+	string 			content;
+	sArr			lines;
+	i32				body_line;
+	thread_t		thread;
 } _cwr;
 
-typedef _cwr 			cwr;
-typedef _cwr 			*cwr_t;
+typedef _cwr 		cwr;
+typedef _cwr 		*cwr_t;
 
 typedef struct
 {
 	/* Web server's socket info */
-	string 				ip;
-	i32 				port;
-	sock_t				connection;
-	addr_in 			addr;
-	thread_t			thread;
+	string 			ip;
+	i32 			port;
+	sock_t			connection;
+	thread_t		thread;
 
 	/* Routes */
-	handler_t 			middleware;
-	rArr				routes;
-	i32					route_count;
+	handler_t 		middleware;
+	rArr			routes;
+	i32				route_count;
 } _cws;
 
 
@@ -138,17 +138,18 @@ handler_t request_handler(cwr_t wr);
 
 cws_t init_web_server(string ip, i32 port)
 {
-	cws webs = {
-		ip,
-		port,
-		listen_tcp(NULL, 8080, 999),
-		{0},
-		NULL,
-		NULL,
-		0
-	};
+	cws webs;
+	webs.ip = ip;
+	webs.port = port;
+	webs.connection = listen_tcp(ip, port, 999);
+	webs.middleware = NULL;
+	webs.routes = NULL;
+	webs.route_count = 0;
 
 	cws_t ws = to_heap(&webs, sizeof(_cws));
+	if(!ws)
+		clibp_panic("error");
+
 	ws->thread = allocate(0, sizeof(_thread));
 	if(!ws->thread)
 		clibp_panic("error, unable to allocate mem");
@@ -161,6 +162,7 @@ handler_t listen_for_request(cws_t ws) {
 	sock_t client;
 	while(1)
 	{
+		println("Listening for web requests....!");
 		if(!(client = sock_accept(ws->connection, 1024)))
 			continue;
 
@@ -171,6 +173,8 @@ handler_t listen_for_request(cws_t ws) {
 		wr->thread = allocate(0, sizeof(_thread));
 		*wr->thread = start_thread((handler_t)request_handler, wr, 0);
 	}
+
+	println("Exiting...");
 }
 
 handler_t request_handler(cwr_t wr)
@@ -195,12 +199,16 @@ handler_t request_handler(cwr_t wr)
 
 int entry()
 {
-	cws_t ws = init_web_server(NULL, 8080);
+	toggle_debug_mode();
+	cws_t ws = init_web_server(NULL, 50);
 	if(!ws)
 	{
 		println("error, unable to put up the webserver!");
 		return 1;
 	}
-	println("Webserver up @ localhost:"), _printi(8080), print("\n");
+	println("Webserver up @ localhost:"), _printi(50), print("\n");
+
+//	char n[1024];
+//	int bytes = get_input(n, 1024);
 	return 0;
 }

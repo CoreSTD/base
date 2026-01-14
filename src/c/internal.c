@@ -15,9 +15,7 @@ fn __exit(i32 code)
 }
 
 int get_input(string dest, i32 count) {
-	char BUFFER[count];
-	long bytes_read = __syscall__(0, (long)BUFFER, count, -1, -1, -1, _SYS_READ);
-	mem_cpy(dest, BUFFER, count);
+	long bytes_read = __syscall__(0, (long)dest, count, -1, -1, -1, _SYS_READ);
 
 	return bytes_read;
 }
