@@ -237,9 +237,9 @@ i32		count_int_digits(i32 num);
 
 #ifdef _CLIBP_ARR_H
 	array 	init_array(void);
-	bool	array_append(array arr, ptr p);
+	array	array_append(array arr, ptr p);
 	int 	array_contains_ptr(array arr, ptr p);
-	int 	array_contains_str(sArr arr, string needle);
+	int 	array_contains_str(array arr, string needle);
 #endif
 
 #ifdef _CLIBP_MAP_H

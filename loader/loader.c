@@ -23,23 +23,6 @@ void _atexit(void *(*handler)())
 /* Declare Function from build/syscall.o */
 void __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long arg5, long arg6);
 
-__attribute__((used, externally_visible)) void __execute(char *app, char **args)
-{
-	if(!app || !args)
-		return;
-
-	long pid = __syscall__(0, 0, 0, -1, -1, -1, _SYS_FORK);
-
-	if(pid == 0)
-	{
-		__syscall__((long)app, (long)args, 0, -1, -1, -1, _SYS_EXECVE);
-	} else if(pid > 0) {
-		__syscall__(pid, 0, 0, -1, -1, -1, _SYS_WAIT4);
-	} else {
-		__syscall__(1, (long)"fork error\n", 7, -1, -1, -1, _SYS_WRITE);
-	}
-}
-
 static int ___get_cmd_info(char *buffer) {
     #if defined(__x86__) || defined(__x86_64__)
         long fd = __syscall__((long)"/proc/self/cmdline", 0, 0, -1, -1, -1, _SYS_OPEN);

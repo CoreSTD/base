@@ -2,23 +2,30 @@
 
 array init_array(void)
 {
-	return allocate(0, sizeof(void *));
+	return allocate(sizeof(void *), 1);
 }
 
-bool array_append(array arr, ptr p)
+int array_count(array arr)
+{
+	int i, count = 0;
+	for(i = 0; arr[i] != NULL; i++)
+		count++;
+
+	return count;
+}
+
+array array_append(array arr, ptr p)
 {
 	if(!arr)
-		return false;
+		return NULL;
 
-	__meta__ *info = __get_meta__(arr);
-
-	arr[info->length] = p;
-	array new_arr = to_heap(arr, sizeof(void *) * (info->length + 1));
+	int c = array_count(arr);
+	arr[c++] = p;
+	array new_arr = to_heap(arr, sizeof(void *) * (c + 1));
+	new_arr[c] = NULL;
 
 	pfree(arr, 1);
-	arr = new_arr;
-
-	return true;
+	return new_arr;
 }
 
 int array_contains_ptr(array arr, ptr p)
@@ -35,7 +42,7 @@ int array_contains_ptr(array arr, ptr p)
 	return -1;
 }
 
-int array_contains_str(sArr arr, string needle)
+int array_contains_str(array arr, string needle)
 {
 	if(!arr || !needle)
         return -1;
