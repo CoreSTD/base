@@ -1,6 +1,10 @@
 <div align="center">
 	<h1>clibp v3.0</h1>
 	<p>The official minimal C backend alternative to GLIBC</p>
+
+[Home](/)
+| [Introduction](doc/intro.md)
+| [Libraries](doc/libs.md)
 </div>
 
 # Some Info
