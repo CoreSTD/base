@@ -1,3 +1,9 @@
+;
+;
+;	x86_64 String Operations to be optimized
+;
+; TODO; Test this lib
+;
 global x86_64_mem_set
 glball x86_64_mem_cpy
 
@@ -10,7 +16,7 @@ section .data
 section .text
 	global _start
 
-; @label: strcpy
+; @label: __mem_set
 ; @arguments:
 ;	RDI = char *
 ;	AL = char
@@ -33,7 +39,7 @@ __mem_set:
 	.exit_mem_set:
 		ret
 
-; @label: mem_cpy
+; @label: __mem_cpy
 ; @arguments:
 ; 	RDI = char *
 ; 	RSI = char *
