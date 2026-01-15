@@ -1,5 +1,5 @@
 <div align="center">
-	<h1>clibp v3.0</h1>
+	<h1>clib+ v3.0</h1>
 	<p>The official minimal C backend alternative to GLIBC</p>
 
 ● [Start-up](/README.md)
