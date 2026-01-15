@@ -1,3 +1,5 @@
+Library Auto Documentation Test for clib+ header generated with ``_test.py``
+
 # _CLIBP_INTERNAL_H
 ```c
 	#define clibp_panic(msg) 	\

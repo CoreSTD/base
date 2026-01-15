@@ -23,7 +23,7 @@ for line in lines:
         if capture:
             libs[current] += f"{line}\n"
 
-markdown = ""
+markdown = "Library Auto Documentation Test for clib+ header generated with ``_test.py``\n\n"
 for lib in libs:
     markdown += f"# {lib}\n```c\n{libs[lib]}```\n"
 
