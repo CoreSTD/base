@@ -1,7 +1,7 @@
 <div align="center">
     <h1>clib+ Introduction</h1>
 
-[Home](/)
+[Start-up](/README.md)
 | ● [Introduction](doc/intro.md)
 | [Libraries](doc/libraries.md)
 </div>
