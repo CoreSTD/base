@@ -3,7 +3,7 @@
 
 [Home](/)
 | ● [Introduction](doc/intro.md)
-| [Libraries](doc/libs.md)
+| [Libraries](doc/libraries.md)
 </div>
 
 
