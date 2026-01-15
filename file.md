@@ -1,116 +1,5 @@
-/*
-*
-*	[ clib+ ]
-*
-*	- An alternative minimal C backend ( -nostdlib -nostdinc )
-*
-*/
-#pragma once
-
-extern int __CLIBP_DEBUG__;
-#ifndef __CLIBP__
-	#define __CLIBP__
-	#define _CLIBP_INT_H
-	#define _CLIBP_CHAR_H
-	#define _CLIBP_STR_H
-	#define _CLIBP_ARR_H
-	#define _CLIBP_MAP_H
-	#define _CLIBP_MEM_H
-	#define _CLIBP_FILE_H
-	#define _CLIBP_SOCKET_H
-	#define _CLIBP_THREAD_H
-	#define _CLIBP_INTERNAL_H
-	#define _CLIBP_ALLOCATOR_H
-
-	#define printf print
-	#define nullptr_t ((void *)0)
-	#define emptyptr_t ((void *)-1)
-#endif
-
-/*
-	Auto Architecture Detection
-
-	Disable by using DISABLE_AUTO_ARCH_DET
-	followed by a specific architecture for compilation
-*/
-#include "asm.h"
-
-/*
-	Built-in Types
-*/
-typedef signed char			i8;
-typedef signed short int	i16;
-
-#define i32_MIN 			-0x80000000
-#define i32_MAX 			0x7FFFFFFF
-typedef signed int 			i32;
-
-typedef signed long long 	i64;
-
-typedef unsigned char 		u8;
-typedef unsigned short 		u16;
-typedef unsigned int		u32;
-typedef unsigned long long 	u64;
-
-/* string */
-typedef char* 				string;
-
-/* general array */
-typedef void** 				array;
-
-/* int array and char array */
-typedef i32* 				iArr;
-typedef string* 			sArr;
-
-typedef void* 				any;
-typedef void 				fn;
-typedef void* 				(*handler_t)();
-
-/* backend purposes only */
-typedef void* 				ptr;
-
-/* Counters */
-typedef i32 				len_t;
-typedef i32					pos_t;
-
-/* stdio.h */
-#define bool				i8
-#define true				1
-#define false				1
-
-/* stdint.h */
-//#undef _STDINT_H
-//typedef unsigned long int       size_t;
-//typedef unsigned long int       uintptr_t;
-
-/*
-	Compiler Detection
-	Implment C Types when using -nostdlib -nostdinc
-*/
-#if defined(__TINYC__) || defined(__GNUC__)
-	/* Alot of libc libs, have __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION */
-	#if !defined(_STDIO_H) || !defined(__GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION)
-		#undef __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
-		#define NULL                    ((void *)0)
-	#endif
-
-	/* Implementation of the following types from stdint.h */
-//    #if !defined(_STDINT_H) && !defined(__SIZE_TYPE__)
-		typedef unsigned long int		size_t;
-		typedef unsigned long int		uintptr_t;
-//    #endif
-#endif
-
-/* Global Function Declaraction */
-long _syscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
-fn __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long arg5, long arg6);
-long __syscall__(long arg1, long arg2, long arg3, long arg4, long arg5, long arg6, long sys);
-long ___syscall__(long arg1, long arg2, long arg3, long arg4, long arg5, long arg6, long sys);
-
-// Get Start-up App Cmdline Arguments
-int 	get_args(char* argv[]);
-
-#ifdef _CLIBP_INTERNAL_H
+# _CLIBP_INTERNAL_H
+```c
 	#define clibp_panic(msg) 	\
 				__clibp_panic(msg, __FILE__, __LINE__);
 
@@ -128,13 +17,9 @@ int 	get_args(char* argv[]);
 	fn 		print_args(sArr arr);
 	ptr		to_heap(ptr p, i32 sz);
 	fn		__clibp_panic(string msg, string file, int line);
-#endif
-
-/*
-		Memory Utilities
-	@File: src/mem.c
-*/
-#ifdef _CLIBP_MEM_H
+```
+# _CLIBP_MEM_H
+```c
 	/* General memory functions */
 	fn 		memzero(any ptr, size_t);
 	int 	mem_cmp(any src, any ptr, size_t size);
@@ -142,13 +27,9 @@ int 	get_args(char* argv[]);
 	fn 		mem_set(any ptr, char ch, size_t size);
 
 	int 	get_input(string dest, len_t count);
-#endif
-
-/*
-		Allocator
-	@File: src/allocator.c
-*/
-#ifdef _CLIBP_ALLOCATOR_H
+```
+# _CLIBP_ALLOCATOR_H
+```c
 	#if defined(_C_MALLOC_ALTERNATIVE)
 		#define malloc allocate
 	#endif
@@ -194,21 +75,13 @@ int 	get_args(char* argv[]);
 	int         __is_heap_init__();
 	fn        	pfree(any ptr, int clean);
 	__meta__* __get_meta__(any ptr);
-#endif
-
-/*
-			int
-	[ src/stdlib/int.c ]
-*/
-#ifdef _CLIBP_INT_H
+```
+# _CLIBP_INT_H
+```c
 i32		count_int_digits(i32 num);
-#endif
-
-/*
-	 		char
-	[ src/stdlib/char.c ]
-*/
-#ifdef _CLIBP_CHAR_H
+```
+# _CLIBP_CHAR_H
+```c
 	i32 	is_ascii(const char c);
 	i32 	is_ascii_alpha(const char c);
 	i32 	count_char(const string buffer, const char ch);
@@ -216,13 +89,9 @@ i32		count_int_digits(i32 num);
 	i32 	find_char_at(const string buffer, const char ch, int match);
 	i32 	_find_char_at(const string buffer, const char ch, int match, int *start);
 	int 	replace_char(string buffer, const char find, const char replace);
-#endif
-
-/*
-	 		string
-	[ src/stdlib/string.c ]
-*/
-#ifdef _CLIBP_STR_H
+```
+# _CLIBP_STR_H
+```c
 	#define __sprintf(dest, format, ...) \
 			_sprintf(dest, format, (void *[]){__VA_ARGS__, 0});
 
@@ -239,16 +108,16 @@ i32		count_int_digits(i32 num);
 	sArr 	split_string(const string buffer, const char ch, int* idx);
 	string 	get_sub_str(const string buffer, int start, int end);
 	bool 	is_empty(string buffer);
-#endif
-
-#ifdef _CLIBP_ARR_H
+```
+# _CLIBP_ARR_H
+```c
 	array 	init_array(void);
 	array	array_append(array arr, ptr p);
 	int 	array_contains_ptr(array arr, ptr p);
 	int 	array_contains_str(array arr, string needle);
-#endif
-
-#ifdef _CLIBP_MAP_H
+```
+# _CLIBP_MAP_H
+```c
 	typedef struct {
 		string key;
 		string value;
@@ -269,9 +138,9 @@ i32		count_int_digits(i32 num);
 	map_t 	init_map(void);
 	bool 	map_append(map_t map, string key, string value);
 	string 	find_key(map_t map, string key);
-#endif
-
-#ifdef _CLIBP_FILE_H
+```
+# _CLIBP_FILE_H
+```c
 	typedef u32 fd_t;
 
 	typedef enum FILE_MODE {
@@ -347,9 +216,9 @@ i32		count_int_digits(i32 num);
 				close file
 	*/
 	fn		file_close(fd_t fd);
-#endif
-
-#ifdef _CLIBP_SOCKET_H
+```
+# _CLIBP_SOCKET_H
+```c
 	
 	#define AF_INET         2
 	#define SOL_SOCKET      1
@@ -401,9 +270,9 @@ i32		count_int_digits(i32 num);
 	u16			_htons(u16 x);
 	u32 		_htonl(u32 x);
 	fn 			sock_close(sock_t);
-#endif
-
-#ifdef _CLIBP_THREAD_H
+```
+# _CLIBP_THREAD_H
+```c
 	typedef struct
 	{
 		handler_t	fnc;
@@ -429,4 +298,4 @@ i32		count_int_digits(i32 num);
 
 	thread 		start_thread(handler_t fnc, ptr p, int wait);
 	fn 			thread_kill(thread_t t);
-#endif
+```
