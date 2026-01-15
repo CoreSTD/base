@@ -6,6 +6,13 @@
 
 #include "clibp.h"
 
+/* 
+	Used to compile C - Stdlib malloc w/ clib+
+*/
+#if defined(_C_MALLOC_ALTERNATIVE)
+	#define malloc allocate
+#endif
+
 void __auto_free__(void *p)
 {
 	free(*(void **)p);

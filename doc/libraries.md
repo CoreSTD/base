@@ -12,22 +12,20 @@
 
 <p>Stdlib<p>
 
-* [Internal](/doc/lib_docs/internal.md)
-* [Allocator](/doc/lib_docs/allocator.md)
-* [Mem](/doc/lib_docs/mem.md)
-* [Int](/doc/lib_docs/int.md)
-* [String](/doc/lib_docs/string.md)
-* [Array](/doc/lib_docs/array.md)
-* [Map](/doc/lib_docs/map.md)
-* [File](/doc/lib_docs/file.md)
-* [Socket](/doc/lib_docs/socket.md)
+* [Internal](/doc/stdlib_docs/internal.md)
+* [Allocator](/doc/stdlib_docs/allocator.md)
+* [Mem](/doc/stdlib_docs/mem.md)
+* [Int](/doc/stdlib_docs/int.md)
+* [String](/doc/stdlib_docs/string.md)
+* [Array](/doc/stdlib_docs/array.md)
+* [Map](/doc/stdlib_docs/map.md)
+* [File](/doc/stdlib_docs/file.md)
+* [Socket](/doc/stdlib_docs/socket.md)
 </td>
 <td valign=top>
 
 <p>External/Public Libs</p>
 
-* [Dev Set-Up](#Installation)
-    * [Minimal Web-app Start up](#initialize-websigns-c-web-server-cws)
-    * [Full Example](#complete-example)
+* [WebServer](#Installation)
 </td></tr>
 </table>
