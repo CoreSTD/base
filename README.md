@@ -28,10 +28,7 @@
 - x86
 - x86_64
 - AMD
-- ARM v5/v7
-- Aarch64
 - RISC-V
-- WIN64
 
 # Installation
 
