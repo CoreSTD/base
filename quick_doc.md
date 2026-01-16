@@ -9,6 +9,30 @@
 | [Todo](/doc/todo.md)
 </div>
 
+<table align="center">
+<td align=center>
+<p>Built-in Types<p>
+int
+| char
+| string
+| array
+| map
+| ptr
+| fn
+</td>
+<td align=center>
+<p>Bit-based Types<p>
+i8
+| i16
+| i32
+| i64
+| u8
+| u16
+| u32
+| u64
+</td>
+</table>
+
 * A Documentation for developers who know what they're doing!
 
 * This documentation MD was generated using ``_test.py``

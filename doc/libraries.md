@@ -17,6 +17,8 @@ int
 | string
 | array
 | map
+| ptr
+| fn
 </td>
 <td align=center>
 <p>Bit-based Types<p>

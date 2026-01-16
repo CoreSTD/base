@@ -47,6 +47,31 @@ md_header = """
 | [Libraries](/doc/libraries.md)
 | [Todo](/doc/todo.md)
 </div>
+
+<table align="center">
+<td align=center>
+<p>Built-in Types<p>
+int
+| char
+| string
+| array
+| map
+| ptr
+| fn
+</td>
+<td align=center>
+<p>Bit-based Types<p>
+i8
+| i16
+| i32
+| i64
+| u8
+| u16
+| u32
+| u64
+</td>
+</table>
+
 """
 markdown = f"{md_header}\n* A Documentation for developers who know what they're doing!\n\n* This documentation MD was generated using ``_test.py``\n\n"
 for lib in libs:
