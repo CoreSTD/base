@@ -3,6 +3,7 @@
 
 [Start-up](/README.md)
 | [Introduction](/doc/intro.md)
+| [Quick Doc](/quick_doc.md)
 | ● [Libraries](/doc/libraries.md)
 | [Todo](/doc/todo.md)
 </div>
@@ -21,7 +22,7 @@
 * [Array](/doc/stdlib_docs/array.md)
 * [Map](/doc/stdlib_docs/map.md)
 * [File](/doc/stdlib_docs/file.md)
-* [Socket](/doc/stdlib_docs/socket.md)
+* [Thread](/doc/stdlib_docs/thread.md)
 </td>
 <td valign=top>
 
@@ -36,3 +37,13 @@
 * [GLFW2](#)
 </td></tr>
 </table>
+
+# Array Library
+
+## Functions
+```c
+array 	init_array(void);
+array	array_append(array arr, ptr p);
+int 	array_contains_ptr(array arr, ptr p);
+int 	array_contains_str(array arr, string needle);
+```

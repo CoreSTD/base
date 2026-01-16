@@ -9,6 +9,27 @@
 
 ## List Of Libraries Provided for clib+
 <table align="center">
+<td align=center>
+<p>Built-in Types<p>
+int
+| char
+| string
+| array
+| map
+</td>
+<td align=center>
+<p>Bit-based Types<p>
+i8
+| i16
+| i32
+| i64
+| u8
+| u16
+| u32
+| u64
+</td>
+</table>
+<table align="center">
 <tr><td valign=top>
 
 <p>Stdlib<p>
@@ -21,7 +42,7 @@
 * [Array](/doc/stdlib_docs/array.md)
 * [Map](/doc/stdlib_docs/map.md)
 * [File](/doc/stdlib_docs/file.md)
-* [Socket](/doc/stdlib_docs/socket.md)
+* [Thread](/doc/stdlib_docs/thread.md)
 </td>
 <td valign=top>
 

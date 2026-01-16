@@ -3,6 +3,7 @@
 
 [Start-up](/README.md)
 | [Introduction](/doc/intro.md)
+| [Quick Doc](/quick_doc.md)
 | ● [Libraries](/doc/libraries.md)
 | [Todo](/doc/todo.md)
 </div>
@@ -21,7 +22,7 @@
 * [Array](/doc/stdlib_docs/array.md)
 * [Map](/doc/stdlib_docs/map.md)
 * [File](/doc/stdlib_docs/file.md)
-* [Socket](/doc/stdlib_docs/socket.md)
+* [Thread](/doc/stdlib_docs/thread.md)
 </td>
 <td valign=top>
 
@@ -39,7 +40,7 @@
 
 # Allocator Library
 
-### Definitions
+## Definitions
 ```c
 #define PROT_READ   	0x1
 #define PROT_WRITE		0x2
@@ -56,7 +57,7 @@
 #define _LARGE_MEM_SZ_      4096 * 3
 ```
 
-### Type(s) / Struct(s)
+## Type(s) / Struct(s)
 ```c
 typedef void* heap_t;
 
@@ -67,7 +68,7 @@ typedef struct {
 } __meta__;
 ```
 
-### Functions
+## Functions
 
 ```c
 fn 			set_heap_sz(int n);

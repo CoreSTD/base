@@ -3,6 +3,7 @@
 
 [Start-up](/README.md)
 | [Introduction](/doc/intro.md)
+| [Quick Doc](/quick_doc.md)
 | ● [Libraries](/doc/libraries.md)
 | [Todo](/doc/todo.md)
 </div>
@@ -21,7 +22,7 @@
 * [Array](/doc/stdlib_docs/array.md)
 * [Map](/doc/stdlib_docs/map.md)
 * [File](/doc/stdlib_docs/file.md)
-* [Socket](/doc/stdlib_docs/socket.md)
+* [Thread](/doc/stdlib_docs/thread.md)
 </td>
 <td valign=top>
 
@@ -39,7 +40,7 @@
 
 # File Library
 
-### Definitions/Enums
+## Definitions/Enums
 ```c
 typedef enum FILE_MODE {
 	O_RDONLY 	= 0,		// Read
@@ -52,12 +53,12 @@ typedef enum FILE_MODE {
 } FILE_MODE;
 ```
 
-### Type
+## Type
 ```c
 typedef u32 fd_t;
 ```
 
-### Functions
+## Functions
 ```c
 fd_t    open_file(const char* filename, FILE_MODE mode, int flags);
 int		file_content_size(fd_t fd);

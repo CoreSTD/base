@@ -3,6 +3,7 @@
 
 [Start-up](/README.md)
 | [Introduction](/doc/intro.md)
+| [Quick Doc](/quick_doc.md)
 | ● [Libraries](/doc/libraries.md)
 | [Todo](/doc/todo.md)
 </div>
@@ -21,7 +22,7 @@
 * [Array](/doc/stdlib_docs/array.md)
 * [Map](/doc/stdlib_docs/map.md)
 * [File](/doc/stdlib_docs/file.md)
-* [Socket](/doc/stdlib_docs/socket.md)
+* [Thread](/doc/stdlib_docs/thread.md)
 </td>
 <td valign=top>
 
@@ -39,13 +40,13 @@
 
 # Internal Library
 
-### Definitions
+## Definitions
 ```c
 #define clibp_panic(msg) 	\
 			__clibp_panic(msg, __FILE__, __LINE__);
 ```
 
-### Functions
+## Functions
 ```c
 /* internal.c */
 fn		toggle_debug_mode();
