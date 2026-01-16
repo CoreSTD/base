@@ -8,41 +8,9 @@
 # Default Installer
 all: dir compile cloader move clean
 
-# TCC (In Testing Stage) 'sudo make'
-tcc: tcc_compile
-
-#
-#
-#	TCC Compilation
-#
-# 	- Still in development
-#	- Unable to compile @ gcc_clibp with the backend
-#
-tcc_compile:
-	mkdir -p build
-
-	tcc -ffreestanding -std=c99 -c src/*.c \
-	src/stdlib/*.c \
-	src/libs/*.c \
-	-nostdlib
-# 	execstack -c *.o
-
-	ar rcs build/libclibp.a *.o
-	ar rcs build/clibp.o *.o
-	rm -rf *.o
-
-	tcc -ffreestanding -std=c99 -c linker/gcc_clibp.c -o gcc_clibp.o -ffunction-sections -Wl
-	tcc -ffreestanding -std=c99 -c loader/loader.c -o loader/loader.o -ffunction-sections -Wl
-	execstack -c gcc_clibp.o
-	execstack -c loader/loader.o
-
-	ld -o gcc_clibp gcc_clibp.o build/clibp.o
-	rm gcc_clibp.o
-
-	cp -r headers/* /usr/local/include
-	cp build/libclibp.a /usr/lib
-
-	rm -rf *.o
+delete_obj_files:
+	rm -rf loader/loader.o
+	rm -rf build/*.o
 
 #
 # Delete obj file
@@ -110,8 +78,7 @@ compile:
 #
 cloader:
 	gcc -c linker/gcc_clibp.c -o gcc_clibp.o -nostdlib
-	gcc -c loader/loader.c -o loader/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
-	gcc -c loader/init_loader.c -o loader/init_loader.o -nostdlib -ffunction-sections -Wl,--gc-sections -nostdlib
+	gcc -c loader/loader.c -o build/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
 	ld -o gcc_clibp gcc_clibp.o build/clibp.o
 	rm gcc_clibp.o
 
