@@ -46,11 +46,17 @@ fn printc(const char ch)
 {
 	char BUFF[2] = {0};
 	BUFF[0] = ch;
+	BUFF[1] = '\0';
 	print(BUFF);
 }
 
 fn printi(i32 num)
 {
+	if(num == 0)
+	{
+		print("0");
+		return;
+	}
 	char BUFF[5] = {0};
 	BUFF[0] = '0' + num;
 	print(BUFF);
@@ -59,13 +65,7 @@ fn printi(i32 num)
 fn _printi(int num)
 {
     int temp = num, c = 0;
-    char buff[150];
-//    if(num == 0)
-//    {
-//		print("0");
-//		return;
-//    }
-
+    char buff[150] = {0};
     while(temp)
     {
         buff[c++] = '0' + (temp % 10);
