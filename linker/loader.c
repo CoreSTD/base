@@ -8,7 +8,10 @@
 // Loader's Main Function Declaration
 #include "../headers/clibp.h"
 int start_up();
-int entry();
+int entry(int argc, string argv[]);
+
+int __ARGC__ = 0;
+string __ARGV__[80] = {0};
 
 int *(*on_start)() = NULL;
 void *(*on_exit)() = NULL;
@@ -33,7 +36,7 @@ static int ___get_cmd_info(char *buffer) {
     {
         return -1;
     }
-    
+
     char BUFFER[255];
     long bytes = __syscall__(fd, (long)BUFFER, 255, -1, -1, -1, _SYS_READ);
 
@@ -73,6 +76,12 @@ static int ___get_args(char *argv[]) {
     char *ptr = BUFFER;
     int test = _count_char(BUFFER, '\0', count);
 
+	if(test == 0)
+	{
+		mem_cpy(argv[0], BUFFER, str_len(BUFFER));
+		return 1;
+	}
+
     for(int i = 0, match = 0, last = 0; i < test; i++) {
         int pos = _find_char(ptr, '\0', count, match++);
         if(pos == -1)
@@ -85,10 +94,9 @@ static int ___get_args(char *argv[]) {
 }
 
 void _start() {
-    char *__ARGV__[80];
-    int __ARGC__ = ___get_args(__ARGV__);
+	__ARGC__ = ___get_args(__ARGV__);
 
-	set_heap_sz(4096 * 2);
+	set_heap_sz(4096 * 5);
 	init_mem();
     int code = entry(__ARGC__, __ARGV__);
 

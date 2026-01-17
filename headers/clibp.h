@@ -83,6 +83,8 @@ typedef i32					pos_t;
 //typedef unsigned long int       size_t;
 //typedef unsigned long int       uintptr_t;
 
+//extern string __ARGV__[80];
+//extern int __ARGC__;
 /*
 	Compiler Detection
 	Implment C Types when using -nostdlib -nostdinc

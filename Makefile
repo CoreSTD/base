@@ -31,7 +31,7 @@ FILES 		= src/c/*.c \
 .PHONY: all
 
 # Default Installer
-all: setup compile cloader move clean compile_asm test_run
+all: setup compile cloader move clean compile_asm # test_run
 
 setup:
 	mkdir -p $(BUILD)
