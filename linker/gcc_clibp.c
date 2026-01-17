@@ -104,11 +104,11 @@ int entry(int argc, string argv[]) {
 		/*
 			Debug GCC Command
 		*/
-		print("Command: ");
-		for(int n = 0; n < pos; n++)
-			print("'"), print(gcc_cmd[n]), println("'");
+		// print("Command: ");
+		// for(int n = 0; n < pos; n++)
+		// 	print("'"), print(gcc_cmd[n]), println("'");
 		
-		print("\n");
+		// print("\n");
 
 		println("[ + ] Compiling to object file(s)....");
 		__execute(gcc_cmd[0], gcc_cmd);
@@ -116,20 +116,19 @@ int entry(int argc, string argv[]) {
 		int ld_pos = create_ld_command(ld_cmd);
 		for(int i = idx + 1; i < argc; i++) {
 			
-			int len = str_len(argv[i]);
-			print("BUFFER LEN: "), _printi(len), print(" -> "), println(argv[i]);
-			int pos = find_char(argv[i], '/');
-			if(pos > -1)
+			// print("BUFFER LEN: "), _printi(len), print(" -> "), println(argv[i]);
+			int cnt = count_char(argv[i], '/');
+			int pos = find_char_at(argv[i], '/', cnt);
+			if(pos > -1 && find_string(argv[i], "/") > -1)
 			{
 				argv[i] += pos + 1;
 			}
 			
-			len = str_len(argv[i]);
+			int len = str_len(argv[i]);
 			if(argv[i][len - 1] == 'c') {
 				argv[i][len - 1] = 'o';
 			}
 
-			println(argv[i]);
 			ld_cmd[ld_pos++] = str_dup(argv[i]);
 		}
 
