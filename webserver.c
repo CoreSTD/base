@@ -103,12 +103,12 @@ typedef struct
 	string			path;
 	string			http_version;
 
-//	map_t			headers;
-//	map_t			post;
+	map_t			headers;
+	map_t			post;
 
 	string 			content;
 	sArr			lines;
-	i32				body_line;
+	i32				line_count;
 	thread_t		thread;
 } _cwr;
 
@@ -138,23 +138,23 @@ handler_t request_handler(cwr_t wr);
 
 cws_t init_web_server(string ip, i32 port)
 {
-	cws webs;
-	webs.ip = ip;
-	webs.port = port;
-	webs.connection = listen_tcp(ip, port, 999);
-	webs.middleware = NULL;
-	webs.routes = NULL;
-	webs.route_count = 0;
-
-	cws_t ws = to_heap(&webs, sizeof(_cws));
+	cws_t ws = allocate(0, sizeof(_cws));
 	if(!ws)
-		clibp_panic("error");
+		clibp_panic("Segfault");
 
-	ws->thread = allocate(0, sizeof(_thread));
-	if(!ws->thread)
-		clibp_panic("error, unable to allocate mem");
+	ws->ip = ip;
+	ws->port = port;
+	ws->connection = listen_tcp(NULL, port, 99);
+	ws->middleware = NULL;
+	ws->routes = NULL;
+	ws->route_count = 0;
 
-	*ws->thread = start_thread((handler_t)listen_for_request, ws, 0);
+	listen_for_request(ws);
+//	ws->thread = allocate(0, sizeof(_thread));
+//	if(!ws->thread)
+//		clibp_panic("error, unable to allocate mem");
+
+//	*ws->thread = start_thread((handler_t)listen_for_request, ws, 0);
 	return ws;
 }
 
@@ -177,30 +177,55 @@ handler_t listen_for_request(cws_t ws) {
 	println("Exiting...");
 }
 
+void parse_request(cwr_t wr)
+{
+	
+}
+
 handler_t request_handler(cwr_t wr)
 {
-	string data = sock_read(wr->socket);
-	int len = str_len(data);
+	wr->content = sock_read(wr->socket);
+	int len = __get_meta__(wr->content)->length;
 
+	println(wr->content);
 	if(len < 3)
 	{
 		println("Malform request...!\n");
 		return NULL;
 	}
 
-	if(find_string(data, "GET")) {
-		wr->type = _rGET;
-	} else if(find_string(data, "POST"))
+	wr->lines = split_lines(wr->content, &wr->line_count);
+	if(wr->line_count == 0)
 	{
-		wr->type = _rPOST;
+		println("Malform request\n");
+		return NULL;
 	}
 
+	if(find_string(wr->lines[0], "GET")) {
+		wr->type = _rGET;
+	} else if(find_string(wr->lines[0], "POST"))
+	{
+		wr->type = _rPOST;
+	} else if(find_string(wr->lines[0], "HEAD"))
+	{
+		wr->type = _rHEAD;
+	}
+
+	// TODO; work on the route handler
+	char *fake = "HTTP/1.1 200 OK\r\n"
+				 "Content-Type: text/html;charset=UTF-8\r\n"
+				 "Content-length: 16\r\n"
+				 "Connection: close\r\n\r\n"
+				 "Hello World\r\n\r\n";
+
+	sock_write(wr->socket, fake);
+	return NULL;
 }
 
 int entry()
 {
 	toggle_debug_mode();
-	cws_t ws = init_web_server(NULL, 50);
+	cws_t ws = init_web_server(NULL, 40);
 	if(!ws)
 	{
 		println("error, unable to put up the webserver!");
@@ -208,7 +233,7 @@ int entry()
 	}
 	println("Webserver up @ localhost:"), _printi(50), print("\n");
 
-//	char n[1024];
-//	int bytes = get_input(n, 1024);
+	char n[1024];
+	int bytes = get_input(n, 1024);
 	return 0;
 }

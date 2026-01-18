@@ -15,10 +15,10 @@ int entry()
 	sock_t server = listen_tcp(NULL, 420, 999);
 	if(!server) println("ERROR");
 
+	println("Listening @ http://127.0.0.1:420");
 	sock_t client;
 	while(1)
 	{
-		println("Listening");
 		if(!(client = sock_accept(server, 1024)))
 			continue;
 
@@ -30,13 +30,8 @@ int entry()
 			string data = sock_read(client);
 			int len = str_len(data);
 
-			if(data[len - 1] == '\r' || data[len - 1] == '\n')
-				data[len - 1] = '\0',	len--;
-
-			if(data[len - 1] == '\r' || data[len - 1] == '\n')
-				data[len - 1] = '\0',	len--;
-
-			if(str_cmp(data, "help"))
+			strip_input(data, &len);
+			if(mem_cmp(data, "help", len))
 			{
 				sock_write(client, "working dawg\n");
 			} else {

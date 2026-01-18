@@ -7,6 +7,7 @@
 */
 #pragma once
 
+extern char _OUTPUT_[1024];
 extern int __CLIBP_DEBUG__;
 #ifndef __CLIBP__
 	#define __CLIBP__

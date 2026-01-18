@@ -15,6 +15,27 @@ fn ptr_to_str(ptr p, string out)
 	out[idx] = '\0';
 }
 
+string _int_to_str(int num)
+{
+    int temp = num, c = 0;
+    char buff[150] = {0};
+    while(temp)
+    {
+        buff[c++] = '0' + (temp % 10);
+        temp /= 10;
+    }
+
+    int i;
+    for(i = 0; i < c; i++)
+    {
+        char t = buff[i], n = buff[--c];
+        buff[i] = n;
+        buff[c] = t;
+    }
+
+    return to_heap(buff, i + 1);
+}
+
 /* Returns an string on the heap */
 string int_to_str(int num)
 {

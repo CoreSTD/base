@@ -3,6 +3,7 @@
 #include "../../headers/asm.h"
 
 int __CLIBP_DEBUG__ = 0;
+char _OUTPUT_[1024] = {0};
 
 fn toggle_debug_mode()
 {
@@ -115,8 +116,10 @@ ptr to_heap(ptr p, i32 sz)
 
 fn __clibp_panic(string msg, string file, int line)
 {
-	print(file), print(":"), _printi(line),
-	print(" -> "), println(msg);
+	if(__CLIBP_DEBUG__)
+		print(file), print(":"), _printi(line), print(" -> ");
+
+	print("\x1b[31merror\x1b[39m: "), println(msg);
 
 	__exit(1);
 }

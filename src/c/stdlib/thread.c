@@ -20,9 +20,7 @@ thread start_thread(handler_t fnc, ptr p, int wait)
 		__exit(0);
 	} else if(t.pid > 0) {
 		if(__CLIBP_DEBUG__) {
-			char output[100];
-			__sprintf(output, "Executed: %d\n", (void *)&t.pid);
-			print(output);
+			print("Executed: "), _printi(t.pid), print("\n");
 		}
 
 		if(wait)

@@ -11,7 +11,7 @@ fd_t open_file(const char *filename, FILE_MODE mode, int flags)
 	#endif
 
     if(fd == -2)
-		clibp_panic("[ - ] Error, No file or directory");
+		clibp_panic("No file or directory");
 
     if(fd < 0)
         return -1;

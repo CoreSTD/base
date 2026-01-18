@@ -14,15 +14,6 @@
 - The project is still in development!
 - The library is a minimal C backend with a custom loader to link!
 
-# Things clib+ doesn't support yet
-
-- No argument syntax checking<br />
-	``Expects: <input> -o <output>``<br />
-	``Optional flags: --strip --c``
-- Multiple files
-- C flags
-- Linker flags
-
 ### Supported Architectures
 
 - x86
@@ -30,9 +21,7 @@
 - AMD
 - RISC-V
 
-# Installation
-
-- Currently; Local install use only for development
+### Install
 
 Run the following commands to install the library!
 ```bash
@@ -42,7 +31,7 @@ cd cdlib_v3_0
 make # make tcc (for tcc (not complete, testing stage))
 ```
 
-# Standard Lib Use
+### Standard Use
 
 ```c
 #include <clibp.h>
@@ -57,5 +46,6 @@ int entry() {
 
 ### Linux Linker
 ```c
-./gcc_clibp <*.c> -o <output>
+Usage: gclibp <c_file> <opt> <output>
+Use --help for help or more arguments
 ```

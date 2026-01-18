@@ -4,7 +4,7 @@ sock_t listen_tcp(const string ip, int port, int concurrent)
 {
     long sock = __syscall__(AF_INET, 1, 0, 0, 0, 0, _SYS_SOCKET);
     if (sock < 0)
-		clibp_panic("error, unable to create a socket...!");
+		clibp_panic("unable to create a socket...!");
 
 	if(__CLIBP_DEBUG__)
 		print("Socket successfully created: "), _printi(sock), print("\n");
@@ -13,24 +13,23 @@ sock_t listen_tcp(const string ip, int port, int concurrent)
     int reuse = 1;
     long cc = ___syscall__(sock, SOL_SOCKET, SO_REUSEADDR, (long)&reuse, sizeof(reuse), 0, _SYS_SETSOCKOPT);
     if (cc < 0)
-		clibp_panic("error, unable to reuse addr...!");
+		clibp_panic("unable to reuse addr...!");
 
     /* bind */
-    _sockaddr_in addr;
-    mem_set(&addr, 0, sizeof(addr));
+    _sockaddr_in addr = {0};
     addr.sin_family = AF_INET;
     addr.sin_port = _htons((unsigned short)port);
-    addr.sin_addr.s_addr = 0; // INADDR_ANY
+    addr.sin_addr.s_addr = 0;
 
     long ret = __syscall__(sock, (long)&addr, sizeof(addr), 0, 0, 0, _SYS_BIND);
     if (ret < 0)
-		clibp_panic("error, unable to bind socket...!");
+		clibp_panic("unable to bind socket...!");
 
     /* listen */
     ret = __syscall__(sock, concurrent, 0, 0, 0, 0, _SYS_LISTEN);
 	if(ret < 0)
 	{
-		clibp_panic("error, unable to listen to socket...!");
+		clibp_panic("unable to listen to socket...!");
 	}
 	sock_t socket = allocate(0, sizeof(_sock_t));
 	socket->fd = sock;

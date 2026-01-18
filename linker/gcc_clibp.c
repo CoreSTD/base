@@ -5,17 +5,14 @@ const string HELP_BANNER = "    Argument      Description\n"
     					   "--output      output binary\n"
     					   "-c            object file\n"
     					   "-co           Combine object file(s)";
-/*
-    Argument      Description
-______________________________________
-    --output      output binary
-    -c            object file
-    -co           Combine object file(s)
-*/
 
-#define GCC_FLAGS 5
+// -ffunction-sections -fdata-sections -Wl,--gc-sections
+#define GCC_FLAGS 8
 string GCC_COMPILE_FLAGS[GCC_FLAGS] = {
 	"/usr/bin/gcc",
+	"-ffunction-sections",
+	"-fdata-sections",
+	"-Wl,--gc-sections",
 	"-nostdlib",
 	"-ffreestanding",
 	"-c",
@@ -70,7 +67,7 @@ void __execute(char *app, char **args)
 	}
 }
 
-/* 
+/*
 	Since this is a one operation thing. Heap gets free'd on exit
 */
 int entry(int argc, string argv[]) {
@@ -82,7 +79,7 @@ int entry(int argc, string argv[]) {
 
 	if(argc < 3)
 	{
-		println("[ x ] Error, Invalid arguments provided\nUsage: gclibp <c_file> <opt> <output>\nUse --help for help or more arguments");
+		println("[ x ] \x1b[31mError\x1b[39m, Invalid arguments provided\nUsage: gclibp <c_file> <opt> <output>\nUse --help for help or more arguments");
 		return 1;
 	}
 
@@ -185,16 +182,28 @@ int entry(int argc, string argv[]) {
 
 	__sprintf(BUFFER, "[ + ] Compiling '%s' to '%s'", C_FILE, COPY);
 	println(BUFFER);
-	char *GCC_CMD[8] = {"/usr/bin/gcc", "-nostdlib", "-ffreestanding", "-c", C_FILE, "-o", COPY, 0};
+	char *GCC_CMD[10] = {
+		"/usr/bin/gcc",
+		"-nostdlib",
+		"-ffunction-sections",
+		"-Wl,--gc-sections",
+		"-ffreestanding",
+		"-c",
+		C_FILE,
+		"-o",
+		COPY,
+		0
+	};
     __execute(GCC_CMD[0], GCC_CMD);
 
 	if(array_contains_str((array)argv, "-c") > -1) {
 		return 0;
 	}
 
-	char *LINKER_CMD[8] = {
+	char *LINKER_CMD[9] = {
         "/usr/bin/ld",
 		"--no-relax",
+		"--gc-sections",
         "-o",
         OUTPUT,
 		COPY,

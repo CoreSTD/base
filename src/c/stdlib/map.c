@@ -4,7 +4,7 @@ map_t init_map(void)
 {
 	map_t map = allocate(0, sizeof(_map));
 	if(!map)
-		clibp_panic("error, unable to allocate...!");
+		clibp_panic("unable to allocate...!");
 
 	map->fields = allocate(0, sizeof(_field));
 	map->len = 0;
