@@ -102,6 +102,12 @@ int __get_size__(any ptr)
 	return !info->size ? info->length : info->size * info->length;
 }
 
+fn pfree_array(array p)
+{
+	for(int i = 0; p[i] != NULL; i++)
+		pfree(p[i], 1);
+}
+
 fn _pfree(any ptr) { pfree(ptr, 1); }
 fn pfree(any ptr, int clean)
 {

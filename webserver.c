@@ -107,6 +107,7 @@ typedef struct
 	map_t			post;
 
 	string 			content;
+	string			body;
 	sArr			lines;
 	i32				line_count;
 	thread_t		thread;
@@ -179,7 +180,46 @@ handler_t listen_for_request(cws_t ws) {
 
 void parse_request(cwr_t wr)
 {
-	
+	bool capture_body = false;
+
+	int len = __get_meta__(wr->content)->length;
+	wr->body = allocate(0, len);
+
+	/* Parse Headers and Get body, Skip first line */
+	wr->headers = init_map();
+	for(int i = 1; i < wr->line_count; i++)
+	{
+		if(!wr->lines[i])
+			break;
+
+		if(find_string(wr->lines[i], ":") > -1)
+		{
+			/* After headers which is an empty line, Capture Body */
+			if(is_empty(wr->lines[i])) {
+				capture_body = true;
+			} else if(is_empty(wr->lines[i] && capture_body) {
+				break;
+			}
+
+			/* Capture body after header */
+			if(capture_body)
+			{
+				str_append(body, wr->lines[i]);
+				continue;
+			}
+
+			int arg_c = 0;
+			sArr args = split_string(wr->lines[i], ':', &arg_c);
+
+			if(arg_c < 2)
+			{
+				pfree_array(args, 1);
+			}
+
+			int pos = find_char(wr->lines[i], ':');
+			map_append(wr->headers, args[0], wr->lines[i] + pos);
+		}
+	}
 }
 
 handler_t request_handler(cwr_t wr)
