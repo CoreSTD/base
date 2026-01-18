@@ -11,15 +11,15 @@ cws_t init_web_server(string ip, i32 port)
 	ws->port = port;
 	ws->connection = listen_tcp(NULL, port, 99);
 	ws->middleware = NULL;
-	ws->routes = NULL;
+	ws->routes = allocate(0, sizeof(_route *));
 	ws->route_count = 0;
 
-	listen_for_request(ws);
-//	ws->thread = allocate(0, sizeof(_thread));
-//	if(!ws->thread)
-//		clibp_panic("error, unable to allocate mem");
+	// listen_for_request(ws);
+	ws->thread = allocate(0, sizeof(_thread));
+	if(!ws->thread)
+		clibp_panic("error, unable to allocate mem");
 
-//	*ws->thread = start_thread((handler_t)listen_for_request, ws, 0);
+	*ws->thread = start_thread((handler_t)listen_for_request, ws, 0);
 	return ws;
 }
 
@@ -40,4 +40,23 @@ handler_t listen_for_request(cws_t ws) {
 	}
 
 	println("Exiting...");
+}
+
+fn web_append_route(cws_t ws, route_t route)
+{
+	ws->routes[ws->route_count++] = route;
+	ws->routes = reallocate(ws->routes, sizeof(_route *) * (ws->route_count + 1));
+	ws->routes[ws->route_count] = NULL;
+}
+
+int find_route(cws_t ws, string route)
+{
+	if(!ws || !route)
+		return -1;
+
+	for(int i = 0; i < ws->route_count && ws->routes[i] != NULL; i++)
+		if(str_cmp(ws->routes[i]->path, route))
+			return i;
+
+	return -1;
 }

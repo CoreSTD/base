@@ -91,6 +91,18 @@ any allocate(int sz, int len) {
     return (any)((char *)ptr + HEAP_META_SZ);
 }
 
+any reallocate(any p, int sz)
+{
+    any new_p = allocate(0, sz + 1);
+    if(!new_p)
+        clibp_panic("Segfault");
+        
+    mem_cpy(new_p, p, __get_size__(p));
+    pfree(p, 1);
+
+    return new_p;
+}
+
 __meta__ *__get_meta__(any ptr)
 {
 	return ((__meta__ *)((char *)ptr - HEAP_META_SZ));

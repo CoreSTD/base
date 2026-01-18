@@ -193,12 +193,13 @@ int 	get_args(char* argv[]);
 	fn        	uninit_mem();
 	int         __get_total_mem_used__(void);
 	ptr         allocate(int sz, int len);
+	ptr  		reallocate(any p, int sz);
 	int         __get_size__(any ptr);
 	int         __is_heap_init__();
 	fn 			pfree_array(array p);
 	fn 			_pfree(any ptr);
 	fn        	pfree(any ptr, int clean);
-	__meta__* __get_meta__(any ptr);
+	__meta__* 	__get_meta__(any ptr);
 #endif
 
 /*

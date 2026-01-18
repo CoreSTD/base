@@ -63,7 +63,7 @@ void parse_request(cwr_t wr)
 		if(is_empty(wr->lines[i])) {
 			capture_body = true;
 			continue;
-		} else if(is_empty(wr->lines[i]) && capture_body) {
+		} else if(is_empty(wr->lines[i]) && capture_body) { // Break after body
 			break;
 		}
 		
