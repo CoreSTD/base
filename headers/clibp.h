@@ -80,7 +80,7 @@ typedef i32					pos_t;
 /* stdio.h */
 #define bool				i8
 #define true				1
-#define false				1
+#define false				0
 
 /* stdint.h */
 //#undef _STDINT_H
@@ -278,6 +278,8 @@ i32		count_int_digits(i32 num);
 	map_t 	init_map(void);
 	bool 	map_append(map_t map, string key, string value);
 	string 	find_key(map_t map, string key);
+	fn 		field_destruct(field_t field);
+	fn 		map_destruct(map_t map);
 #endif
 
 #ifdef _CLIBP_FILE_H

@@ -101,11 +101,11 @@ int entry(int argc, string argv[]) {
 		/*
 			Debug GCC Command
 		*/
-		print("Command: ");
-		for(int n = 0; n < pos; n++)
-			print("'"), print(gcc_cmd[n]), println("'");
+		// print("Command: ");
+		// for(int n = 0; n < pos; n++)
+		// 	print("'"), print(gcc_cmd[n]), println("'");
 		
-		print("\n");
+		// print("\n");
 
 		println("[ + ] Compiling to object file(s)....");
 		__execute(gcc_cmd[0], gcc_cmd);

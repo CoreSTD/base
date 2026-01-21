@@ -1,0 +1,264 @@
+#include "../headers/libweb.h"
+
+handler_t request_handler(cwr_t wr)
+{
+	wr->content = sock_read(wr->socket);
+	int len = __get_meta__(wr->content)->length;
+
+	if(len < 3)
+	{
+		println("Malform request...!\n");
+		return NULL;
+	}
+
+	/* A Web request involves arguments by space even with lines so */
+	if(find_char(wr->content, ' ') == -1)
+		return NULL;
+
+	wr->lines = split_lines(wr->content, &wr->line_count);
+	if(wr->line_count == 0)
+	{
+		println("Malform request\n");
+		return NULL;
+	}
+
+	int c = 0;
+	sArr info = split_string(wr->lines[0], ' ', &c);
+	if(find_string(info[0], "GET")) {
+		wr->type = _rGET;
+	} else if(find_string(info[0], "POST"))
+	{
+		wr->type = _rPOST;
+	} else if(find_string(info[0], "HEAD"))
+	{
+		wr->type = _rHEAD;
+	}
+
+	// Trim GET parameters from URI
+	wr->uri = str_dup(info[1]);
+	int r = find_route(_WEB_, info[1]);
+	if(r == -1) {
+		print_args((string []){"[ WEB_SERVER_LISTENER ]: Attempt @ ", info[1], "\n", 0});
+		return NULL;
+	}
+
+	if(__CLIBP_DEBUG__)
+		print_args((string []){"Triggering: ", _WEB_->routes[r]->name, "\n", 0});
+
+	if(_WEB_->routes[r]->parse_req) {
+		parse_request(wr);
+	}
+
+	_WEB_->routes[r]->handle(wr);
+
+	request_Destruct(wr);
+	return NULL;
+}
+
+i32 parse_get_params(cwr_t wr)
+{
+	if(!wr->uri)
+		return -1; // No URI set
+
+	int pos = find_char(wr->uri, '/');
+	if(pos == -1)
+		return -1; // No params found
+
+	string params = wr->uri + (pos + 1);
+	wr->get = init_map();
+	if(find_char(params, '&') > -1)
+	{
+		int argc = 0;
+		sArr argv = split_string(params, '&', &argc);
+		if(!argc)
+			return -1;
+
+		for(int i = 0; i < argc; i++)
+		{
+			int arg_c = 0;
+			sArr args = split_string(argv[i], '=', &arg_c);
+			if(!args)
+				continue;
+
+			if(arg_c < 2)
+				continue;
+			
+			map_append(wr->get, args[0], args[1]);
+		}
+	}
+
+	int argc = 0;
+	sArr args = split_string(params, '=', &argc);
+	if(!args)
+		return -1;
+
+	if(argc < 2)
+	{
+		pfree_array((array)args);
+		return -1;
+	}
+
+	map_append(wr->get, args[0], args[1]);
+	return wr->get->len;
+}
+
+fn parse_request(cwr_t wr)
+{
+	bool capture_body = false;
+
+	int len = __get_meta__(wr->content)->length;
+	wr->body = allocate(0, len);
+
+	/* Parse Headers and Get body, Skip first line */
+	wr->headers = init_map();
+	for(int i = 1; i < wr->line_count; i++)
+	{
+		if(!wr->lines[i]) {
+			break;
+		}
+
+		/* After headers which is an empty line, Capture Body */
+		if(is_empty(wr->lines[0])) {
+			capture_body = true;
+			continue;
+		} else if(is_empty(wr->lines[0]) && capture_body) { // Break after body
+			break;
+		}
+
+		/* Capture body after header */
+		if(capture_body)
+		{
+			str_append(wr->body, wr->lines[i]);
+			continue;
+		}
+
+		/* Parse Header Line */
+		if(find_char(wr->lines[i], ':') > -1)
+		{
+			int arg_c = 0;
+			sArr args = split_string(wr->lines[i], ':', &arg_c);
+
+			if(!args) {
+				continue;
+			} else if(arg_c < 2)
+			{
+				clibp_panic("unable to get header arguments!");
+				// TODO; CHANGE, THIS ACTUALLY DOESNT FREE THE ELEMENTS
+				pfree((array)args, 1);
+				continue;
+			}
+
+			int pos = find_char(wr->lines[i], ':');
+			if(!map_append(wr->headers, args[0], wr->lines[i] + (pos + 2)))
+				clibp_panic("failed to get header");
+			
+			// TODO; CHANGE, THIS ACTUALLY DOESNT FREE THE ELEMENTS
+			pfree((array)args, 1);
+		}
+	}
+}
+
+fn parse_post(cwr_t wr)
+{
+	if(!wr)
+		return;
+
+	if(find_char(wr->body, '=') == -1)
+		return;
+
+	wr->post = init_map();
+	if(find_char(wr->body, '&') > -1)
+	{
+		int arg_c = 0;
+		sArr args = split_string(wr->body, '&', &arg_c);
+		if(!arg_c)
+			return;
+
+		for(int i = 0; i < arg_c; i++)
+		{
+			int argc = 0;
+			sArr arg = split_string(args[i], '=', &argc);
+			if(!arg || !argc)
+				continue;
+
+			map_append(wr->post, arg[0], arg[1]);
+		}
+
+		pfree_array((void *)args);
+	}
+
+	int argc = 0;
+	sArr args = split_string(wr->body, '=', &argc);
+	if(!args || !argc)
+		return;
+
+	map_append(wr->post, args[0], args[1]);
+	pfree_array((void *)args);
+}
+
+fn parse_get_parameters(cwr_t wr)
+{
+	if(!wr)
+		return;
+
+	int pos = find_char(wr->uri, '?');
+	if(pos == -1)
+		return;
+
+	wr->get = init_map();
+	string parameters = wr->body + pos;
+	if(find_char(parameters, '&')) {
+		int argc = 0;
+		sArr params = split_string(parameters, '&', &argc);
+		if(!argc || !params)
+			return;
+
+		for(int i = 0; i < argc; i++)
+		{
+			int arg_c = 0;
+			sArr field = split_string(params[i], '=', &arg_c);
+			if(!arg_c || !field)
+				continue;
+
+			map_append(wr->get, field[0], field[1]);
+			pfree_array((void *)field);
+		}
+	}
+
+}
+
+fn request_Destruct(cwr_t wr)
+{
+	if(wr->socket)
+		sock_close(wr->socket);
+
+	if(wr->headers)
+		map_destruct(wr->headers);
+	
+	if(wr->path)
+		pfree(wr->path, 1);
+
+	if(wr->uri)
+		pfree(wr->uri, 1);
+
+	if(wr->http_version)
+		pfree(wr->http_version, 1);
+
+	if(wr->post)
+		pfree(wr->post, 1);
+
+	if(wr->get)
+		pfree(wr->get, 1);
+
+	if(wr->content)
+		pfree(wr->content, 1);
+
+	if(wr->body, 1);
+
+	if(wr->lines);
+		pfree_array((array)wr->lines);
+
+	// TODO; create a thread destructor in its lib
+
+	pfree(wr, 1);
+}

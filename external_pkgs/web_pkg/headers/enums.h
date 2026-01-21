@@ -1,5 +1,22 @@
 #pragma once
 
+typedef enum 
+{
+    HTTP_1_0 = 0,
+    HTTP_1_1 = 1,
+    HTTP_2 = 2,
+    HTTP_3 = 3, // Implementation soon
+} http_version;
+
+/* Request Type */
+typedef enum
+{
+	_rNULL 			= 0,
+	_rGET 			= 1,
+	_rPOST 			= 2,
+	_rHEAD 			= 3
+} request_t;
+
 /* Request Status Code */
 typedef enum {
     CONTINUEE                       = 100,
@@ -70,12 +87,3 @@ typedef enum {
     NOT_EXTENDED                    = 510,
     NETWORK_AUTHENTICATION_REQUIRED = 511
 } status_code;
-
-/* Request Type */
-typedef enum
-{
-	_rNULL 			= 0,
-	_rGET 			= 1,
-	_rPOST 			= 2,
-	_rHEAD 			= 3
-} request_t;

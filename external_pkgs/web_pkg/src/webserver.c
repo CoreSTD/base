@@ -1,5 +1,4 @@
-#define __CLIBP_DEBUG__
-#include "headers/libweb.h"
+#include "../headers/libweb.h"
 cws_t _WEB_ = NULL;
 cws_t init_web_server(string ip, i32 port)
 {
@@ -36,7 +35,9 @@ handler_t listen_for_request(cws_t ws) {
 	sock_t client;
 	while(1)
 	{
-		println("Listening for web requests....!");
+		if(__CLIBP_DEBUG__)
+			println("Listening for web requests....!");
+
 		if(!(client = sock_accept(ws->connection, 1024)))
 			continue;
 
@@ -63,7 +64,7 @@ int find_route(cws_t ws, string route)
 		return -1;
 
 	for(int i = 0; i < ws->route_count; i++)
-		if(mem_cmp(ws->routes[i]->path, route, str_len(ws->routes[i]->path)))
+		if(mem_cmp(ws->routes[i]->path, route, __get_size__(route)))
 			return i;
 
 	return -1;

@@ -18,11 +18,13 @@ bool map_append(map_t map, string key, string value)
 		return false;
 
 	field_t field = allocate(0, sizeof(_field));
+	if(!field)
+		clibp_panic("segfault");
 	field->key = str_dup(key);
 	field->value = str_dup(value);
 
 	map->fields[map->len++] = field;
-	map->fields = to_heap(map->fields, sizeof(_field) * (map->len + 1));
+	map->fields = reallocate(map->fields, sizeof(_field) * (map->len + 1));
 
 	return true;
 }
@@ -39,4 +41,23 @@ string find_key(map_t map, string key)
 	}
 
 	return NULL;
+}
+
+fn field_destruct(field_t field)
+{
+	if(field->key)
+		pfree(field->key, 1);
+
+	if(field->value)
+		pfree(field->value, 1);
+
+	pfree(field, 1);
+}
+
+fn map_destruct(map_t map)
+{
+	for(int i = 0; i < map->len; i++)
+		field_destruct(map->fields[i]);
+
+	pfree(map, 1);
 }

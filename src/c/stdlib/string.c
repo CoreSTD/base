@@ -39,33 +39,23 @@ string _int_to_str(int num)
 /* Returns an string on the heap */
 string int_to_str(int num)
 {
-	char buff[12];
-	int i = 0;
-	bool neg = false;
+	int temp = num, c = 0;
+    char buff[150] = {0};
+    while(temp)
+    {
+        buff[c++] = '0' + (temp % 10);
+        temp /= 10;
+    }
 
-	if (num == 0) {
-		buff[0] = '0';
-		buff[1] = '\0';
-		return str_dup(buff);
-	}
+    int i;
+    for(i = 0; i < c; i++)
+    {
+        char t = buff[i], n = buff[--c];
+        buff[i] = n;
+        buff[c] = t;
+    }
 
-	if (num < 0) {
-		neg = true;
-		num = -num;
-	}
-
-	while (num) {
-		buff[i++] = '0' + (num % 10);
-		num /= 10;
-	}
-
-	if (neg) buff[i++] = '-';
-	for (int j = 0; j < i / 2; j++) {
-		char t = buff[j];
-		buff[j] = buff[i - j - 1];
-		buff[i - j - 1] = t;
-	}
-
+	i++;
 	buff[i] = '\0';
 	return str_dup(buff);
 }
@@ -303,6 +293,9 @@ sArr split_string(const string buffer, const char ch, int* idx)
 		LINE[_len] = '\0';
 	}
 
+	
+	arr[(*idx)++] = str_dup(LINE);
+	arr[*idx] = NULL;
 	if (*idx > 0)
 		return arr;
 

@@ -61,7 +61,8 @@ handler_t request_handler(cwr_t wr);
 fn parse_request(cwr_t wr);
 fn parse_post(cwr_t wr);
 fn parse_get_parameters(cwr_t wr);
+fn request_Destruct(cwr_t wr);
 
 // route.c
-route_t create_route(string name, string path, handler_t fnc, int view_only);
+route_t create_route(string name, string path, handler_t fnc, int parse_req);
 #endif
