@@ -1,8 +1,16 @@
 #include "headers/libweb.h"
 
-handler_t index_page(cws_t wr)
+handler_t index_page(cwr_t wr)
 {
-	print("HI");
+	println("\x1b[31mNew Request\x1b[39m");
+	parse_request(wr);
+
+	int header_len = __get_size__(wr->headers->fields);
+	_printi(header_len), print("\n");
+	for(int i = 0; i < header_len; i++) {
+		println(wr->headers->fields[i]->key);
+	}
+	println("\x1b[31mEnding req\x1b[39m");
 }
 
 int entry()

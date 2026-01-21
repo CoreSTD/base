@@ -5,7 +5,7 @@ handler_t request_handler(cwr_t wr)
 	wr->content = sock_read(wr->socket);
 	int len = __get_meta__(wr->content)->length;
 
-	println(wr->content);
+//	println(wr->content);
 	if(len < 3)
 	{
 		println("Malform request...!\n");
@@ -99,6 +99,7 @@ fn parse_request(cwr_t wr)
 
 			if(arg_c < 2)
 			{
+				if(args) pfree_array((array)args);
 				continue;
 			}
 
@@ -107,6 +108,10 @@ fn parse_request(cwr_t wr)
 			pfree_array((array)args);
 		}
 	}
+
+	int _n = __get_size__(wr->headers->fields);
+	for(int i = 0; i < _n - 1 ; i++)
+		println(wr->headers->fields[i]->key);
 }
 
 fn parse_post(cwr_t wr)
