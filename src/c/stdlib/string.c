@@ -110,7 +110,7 @@ fn _sprintf(string buffer, string format, any* args)
 	buffer[idx] = '\0';
 }
 
-fn istr(string dest, int num)
+fn str_append_int(string dest, int num)
 {
 	int temp = num, c = 0;
 	char BUFF[500] = { 0 };

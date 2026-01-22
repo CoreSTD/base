@@ -238,7 +238,7 @@ i32		count_int_digits(i32 num);
 	fn 		ptr_to_str(ptr p, string out);
 	string	int_to_str(int num);
 	fn 		_sprintf(string buffer, string format, any* args);
-	fn 		istr(string dest, int num);
+	fn 		str_append_int(string dest, int num);
 	len_t 	str_len(string buffer);
 	string 	str_dup(const string buffer);
 	int   	str_append(string src, const string sub);

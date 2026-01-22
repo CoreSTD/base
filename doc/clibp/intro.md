@@ -2,10 +2,10 @@
     <h1>clib+ Introduction</h1>
 
 [Start-up](/README.md)
-| ● [Introduction](/doc/intro.md)
+| ● [Introduction](/doc/clibp/intro.md)
 | [Quick Doc](/quick_doc.md)
-| [Libraries](/doc/libraries.md)
-| [Todo](/doc/todo.md)
+| [Libraries](/doc/clibp/libraries.md)
+| [Todo](/doc/clibp/todo.md)
 </div>
 
 

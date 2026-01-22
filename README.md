@@ -6,7 +6,7 @@
 | [Introduction](doc/intro.md)
 | [Quick Doc](/quick_doc.md)
 | [Libraries](doc/libraries.md)
-| [Todo](/doc/todo.md)
+| [Todo](/doc/clibp/todo.md)
 </div>
 
 # Some Info

@@ -1,12 +1,51 @@
 #include "headers/libweb.h"
 
 map_t ending_default_headers;
-fn create_default_web_headers()
+
+map_t DEFAULT_HEADERS[] = {
+	&(_field){ .key = "Content-Type", .value = "text/html;charset=UTF-8" },
+	&(_field){ .key = "Connection", .value = "close" },
+	NULL
+};
+
+typedef struct {
+	status_code code;
+	map_t 		headers;
+	map_t 		cookie;
+	string 		content;
+} _response;
+
+fn send_response(cwr_t wr, _response r)
 {
-	ending_default_headers = init_map();
-	map_append(ending_default_headers, "Content-Type", "text/html;charset=UTF-8");
-	map_append(ending_default_headers, "Connection", "close");
+	// TODO; change this shit
+	string ctx = allocate(0, 4096);
+
+	str_append(ctx, "HTTP/1.1");
+	str_append_int(ctx, r.code);
+	str_append(ctx, status_code_to_string(r.code));
+	str_append(ctx, "\r\n\r\n");
+
+	if(r.headers)
+	{
+		for(int i = 0; i < r.headers; i++)
+		{
+			str_append(ctx, r.headers->fields[i]->key);
+			str_append(ctx, ":");
+			str_append(ctx, r.headers->fields[i]->value);
+			str_append(ctx, "\r\n\n");
+		}
+	}
+
+	if(r.content) {
+		str_append(ctx, r.content);
+		str_append(ctx, "\r\n\r\n");
+	}
+
+	sock_write(wr->socket, ctx);
+	pfree(ctx, 1);
 }
+
+
 
 handler_t index_page(cwr_t wr)
 {
@@ -35,6 +74,7 @@ handler_t index_page(cwr_t wr)
 
 int entry()
 {
+	create_default_web_headers();
 	cws_t ws = init_web_server(NULL, 50);
 	if(!ws)
 	{

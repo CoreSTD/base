@@ -65,4 +65,7 @@ fn request_Destruct(cwr_t wr);
 
 // route.c
 route_t create_route(string name, string path, handler_t fnc, int parse_req);
+
+// utils.c
+string status_code_to_string(status_code code);
 #endif
