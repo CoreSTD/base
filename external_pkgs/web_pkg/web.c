@@ -1,6 +1,10 @@
 #include "headers/libweb.h"
 
-handler_t index_page(cwr_t wr) {
+handler_t test_page(router_t r, cwr_t wr) {
+	send_response(wr, (_response){ OK, 0, 0, r->tmeplate});
+}
+
+handler_t index_page(router_t r, cwr_t wr) {
 	send_response(wr, (_response){ OK, 0, 0, "Hello World!" });
 }
 
@@ -20,6 +24,16 @@ int entry() {
 		(handler_t)index_page,
 		1
 	));
+
+	web_append_route(ws, create_route(
+		"test",
+		"/test",
+		(handler_t)test_page,
+		1
+	));
+
+	if(!get_html_template(ws->routes[1], "index.html")) 
+		clibp_panic("unable to read resource ")
 
 	start_web_server(ws, 0);
 	return 0;

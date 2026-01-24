@@ -66,7 +66,18 @@ fn _sprintf(string buffer, string format, any* args)
 
 	for (int i = 0; format[i] != '\0'; i++)
 	{
-		if (format[i] == '%' && format[i + 1] == 's')
+		if (format[i] == '%' && format[i + 1] == 'c')
+		{
+			if(!is_ascii(*(int *)args[arg])) {
+				println("Invalid ASCII character!");
+				i++, arg++;
+				continue;
+			}
+
+			buffer[idx++] = '0' + *(int *)args[arg];
+			i++, arg++;
+			continue;
+		} else if (format[i] == '%' && format[i + 1] == 's')
 		{
 			string s = ((sArr)args)[arg];
 			if (!s) s = "(null)";
@@ -330,7 +341,49 @@ bool is_empty(string buffer)
 fn byte_to_hex(u8 byte, string out) {
     const char hex_chars[] = "0123456789ABCDEF";
 
-    out[0] = hex_chars[(byte >> 4) & 0xF]; // high nibble
-    out[1] = hex_chars[byte & 0xF];        // low nibble
-    out[2] = '\0';                          // null terminator
+    out[0] = hex_chars[(byte >> 4) & 0xF];
+    out[1] = hex_chars[byte & 0xF];
+    out[2] = '\0';
+}
+
+bool str_startswith(string buffer, string needle)
+{
+    if(!buffer || !needle)
+        return false;
+
+    int len = str_len(buffer);
+    int slen = str_len(needle);
+
+	if(slen > len)
+		return false;
+    
+    int start = len - slen;
+    for(int i = 0; i < slen; i++)
+    {
+        if(buffer[i] != needle[i])
+            return false;
+    }
+
+    return true;
+}
+
+bool str_endswith(string buffer, string needle)
+{
+    if(!buffer || !needle)
+        return false;
+
+    int len = str_len(buffer);
+    int slen = str_len(needle);
+    
+	if(slen > len)
+		return false;
+
+    int start = len - slen;
+    for(int i = start, c = 0; buffer[i] != '\0'; i++, c++)
+    {
+        if(buffer[i] != needle[c])
+            return false;
+    }
+
+    return true;
 }

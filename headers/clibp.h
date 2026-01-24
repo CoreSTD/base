@@ -251,6 +251,8 @@ i32		count_int_digits(i32 num);
 	sArr 	split_string(const string buffer, const char ch, int* idx);
 	string 	get_sub_str(const string buffer, int start, int end);
 	bool 	is_empty(string buffer);
+	bool 	str_startswith(string buffer, string needle);
+	bool 	str_endswith(string buffer, string needle);
 #endif
 
 #ifdef _CLIBP_ARR_H

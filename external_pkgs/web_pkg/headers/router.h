@@ -21,4 +21,5 @@
     typedef _route 	**rArr;
 
     route_t create_route(string name, string path, handler_t fnc, int view_only);
+    bool toggle_read_only(route_t r);
 #endif

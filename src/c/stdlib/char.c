@@ -8,7 +8,7 @@ i32 is_ascii(char c)
 i32 is_ascii_alpha(char c)
 {
 	unsigned char b = (unsigned char)c;
-	return (c > 'a' && c < 'z' || c > 'A' && c < 'Z');
+	return (b > 'a' && b < 'z' || b > 'A' && b < 'Z');
 }
 
 i32 count_char(const string buffer, const char ch)

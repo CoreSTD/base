@@ -125,7 +125,7 @@ handler_t request_handler(cwr_t wr)
 		parse_request(wr);
 	}
 
-	_WEB_->routes[r]->handle(wr);
+	_WEB_->routes[r]->handle(_WEB_->routes[r], wr);
 
 	request_Destruct(wr);
 	return NULL;
@@ -339,11 +339,6 @@ fn request_Destruct(cwr_t wr)
 	pfree(wr, 1);
 }
 
-fn send_html_file(cwr_t wr, _response r)
-{
-	
-}
-
 fn send_response(cwr_t wr, _response r)
 {
     // TODO; change this hardcoded size shit
@@ -355,7 +350,25 @@ fn send_response(cwr_t wr, _response r)
     str_append(ctx, status_code_to_string(r.code));
     str_append(ctx, "\r\n");
 
-    int body_len = r.content ? str_len(r.content) + 3: 0;
+	string body = NULL;
+    if(r.content) {
+		if(str_endswith(r.content, ".html")) {
+			fd_t file = open_file(r.content, 0, 0);
+			size_t sz = file_content_size(file);
+			
+			string file_content = allocate(0, sz + 1);
+			int bytes = file_read(file, file_content, sz);
+			if(bytes <= 0)
+				clibp_panic("unable to read file!");
+
+			file_close(file);
+			body = file_content;
+		} else {
+			body = r.content;
+		}
+    }
+
+    int body_len = body ? str_len(body) + 3: 1;
     if(r.headers)
     {
         if(body_len > 0)
@@ -393,16 +406,11 @@ fn send_response(cwr_t wr, _response r)
     }
 
     str_append(ctx, "\r\n");
-    if(r.cookie)
-    {
-        // implement this shit
-    }
-
-
-    if(r.content) {
-        str_append(ctx, r.content);
-        str_append(ctx, "\r\n\r\n");
-    }
+    if(body)
+	{
+		str_append(ctx, body);
+		str_append(ctx, "\r\n\r\n");
+	}
 
     sock_write(wr->socket, ctx);
     if(__CLIBP_DEBUG__)

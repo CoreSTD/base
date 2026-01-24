@@ -91,7 +91,9 @@ fn print(const string buff)
 
 fn println(const string buff)
 {
-	__syscall__(1, (unsigned long)buff, str_len(buff), -1, -1, -1, _SYS_WRITE);
+	if(buff)
+		__syscall__(1, (unsigned long)buff, str_len(buff), -1, -1, -1, _SYS_WRITE);
+		
 	__syscall__(1, (unsigned long)"\n", 1, -1, -1, -1, _SYS_WRITE);
 }
 
