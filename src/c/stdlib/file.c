@@ -1,4 +1,4 @@
-#include "../../../headers/clibp.h"
+#include "../../../headers/libbase.h"
 
 fd_t open_file(const char *filename, FILE_MODE mode, int flags)
 {
@@ -11,7 +11,7 @@ fd_t open_file(const char *filename, FILE_MODE mode, int flags)
 	#endif
 
     if(fd == -2)
-		clibp_panic("No file or directory");
+		lb_panic("No file or directory");
 
     if(fd < 0)
         return -1;

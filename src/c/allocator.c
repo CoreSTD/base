@@ -1,4 +1,4 @@
-#include "../../headers/clibp.h"
+#include "../../headers/libbase.h"
 
 #define _HEAP_PAGE_SZ_  4096
 int _HEAP_MULTIPLER_    = 2;
@@ -24,14 +24,14 @@ fn set_heap_debug()
 fn init_mem() {
     long ret = __sys_mmap(0, _HEAP_PAGE_, 0x1|0x2, 0x2|0x20, -1, 0);
     if (ret <= 0)
-        clibp_panic("mmap failed!");
+        lb_panic("mmap failed!");
 
 	_HEAP_ = (ptr)ret;
 
     // Clear the heap to mark all memory as free
     mem_set(_HEAP_, 1, _HEAP_PAGE_);
 
-    if (HEAP_DEBUG || __CLIBP_DEBUG__)
+    if (HEAP_DEBUG || __LB_DEBUG__)
         print("[ + ] Heap initialized!\n");
 }
 
@@ -62,7 +62,7 @@ any allocate(int sz, int len) {
 
     int spot = find_space(mem_needed);
     if (spot == -1)
-        clibp_panic("Unable to find space!\n");
+        lb_panic("Unable to find space!\n");
 
     any ptr = (char *)_HEAP_ + spot;
     __meta__ c = { .size = sz, .length = len, .id = 0x7C };
@@ -72,7 +72,7 @@ any allocate(int sz, int len) {
 
     used_mem += mem_needed;
 
-	if(HEAP_DEBUG || __CLIBP_DEBUG__)
+	if(HEAP_DEBUG || __LB_DEBUG__)
 	{
 		char buff[100];
 		ptr_to_str(ptr, buff);
@@ -87,7 +87,7 @@ any reallocate(any p, int sz)
 {
     any new_p = allocate(0, sz + 1);
     if(!new_p)
-        clibp_panic("Segfault");
+        lb_panic("Segfault");
         
     mem_cpy(new_p, p, __get_size__(p));
     pfree(p, 1);
@@ -127,7 +127,7 @@ fn pfree(any ptr, int clean)
 
     used_mem -= total;
 
-	if(HEAP_DEBUG || __CLIBP_DEBUG__)
+	if(HEAP_DEBUG || __LB_DEBUG__)
 	{
     	char buff[100];
     	ptr_to_str(m, buff);
@@ -137,7 +137,7 @@ fn pfree(any ptr, int clean)
 
 fn uninit_mem()
 {
-	if(HEAP_DEBUG || __CLIBP_DEBUG__)
+	if(HEAP_DEBUG || __LB_DEBUG__)
 		println("[ + ] Uninitializing");
         
 	__syscall__((long)_HEAP_, _HEAP_PAGE_, 0, 0, 0, 0, _SYS_MUNMAP);

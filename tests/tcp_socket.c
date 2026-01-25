@@ -1,4 +1,4 @@
-#include <clibp.h>
+#include <libbase.h>
 
 void strip_input(string buffer, int *length)
 {

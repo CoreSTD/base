@@ -1,4 +1,4 @@
-#include "../../headers/clibp.h"
+#include "../../headers/libbase.h"
 
 typedef enum
 {
@@ -47,7 +47,7 @@ int any_cmp(any p, any v, i32 len)
 {
 	if(*(int *)((char *)p - ANY_META_SZ - sizeof(int)) == 0x7C)
 	{
-		clibp_panic("invalid memory provided...!\n");
+		lb_panic("invalid memory provided...!\n");
 	}
 
 	any_t *n = (any_t *)((char *)p - ANY_META_SZ);

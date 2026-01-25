@@ -1,4 +1,4 @@
-#include "../../../headers/clibp.h"
+#include "../../../headers/libbase.h"
 
 thread start_thread(handler_t fnc, ptr p, int wait)
 {
@@ -19,7 +19,7 @@ thread start_thread(handler_t fnc, ptr p, int wait)
 		p ? fnc(p) : fnc();
 		__exit(0);
 	} else if(t.pid > 0) {
-		if(__CLIBP_DEBUG__) {
+		if(__LB_DEBUG__) {
 			print("Executed: "), _printi(t.pid), print("\n");
 		}
 
@@ -38,7 +38,7 @@ fn thread_kill(thread *t)
 {
 	char output[100];
 	__sprintf(output, "Killing thread: %d\n", (void *)&t->pid);
-	if(__CLIBP_DEBUG__) {
+	if(__LB_DEBUG__) {
 		print(output);
 	}
 

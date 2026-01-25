@@ -1,13 +1,13 @@
 #define STR_H
-#include "../../headers/clibp.h"
+#include "../../headers/libbase.h"
 #include "../../headers/asm.h"
 
-int __CLIBP_DEBUG__ = 0;
+int __LB_DEBUG__ = 0;
 char _OUTPUT_[1024] = {0};
 
 fn toggle_debug_mode()
 {
-	__CLIBP_DEBUG__ = __CLIBP_DEBUG__ ? 0 : 1;
+	__LB_DEBUG__ = __LB_DEBUG__ ? 0 : 1;
 }
 
 fn __exit(i32 code)
@@ -116,9 +116,9 @@ ptr to_heap(ptr p, i32 sz)
 	return pointer;
 }
 
-fn __clibp_panic(string msg, string file, int line)
+fn __lb_panic(string msg, string file, int line)
 {
-	if(__CLIBP_DEBUG__)
+	if(__LB_DEBUG__)
 		print(file), print(":"), _printi(line), print(" -> ");
 
 	print("\x1b[31merror\x1b[39m: "), println(msg);

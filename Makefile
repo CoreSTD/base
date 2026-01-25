@@ -1,6 +1,6 @@
 ###
 #
-#       clib+ Installer
+#       Libbase
 #
 ###
 # Compiler
@@ -11,16 +11,21 @@ BUILD 		= build
 
 # Library Filename & External Library Path
 # Header file default path
-LIB			= libclibp.a
+LIB			= libbase.a
 LIB_PATH	= /usr/lib
 HEADER_PATH = /usr/local/include
 
 # Object Filename and Path
-OBJ			= clibp.o
+OBJ			= libbase.o
 OBJ_PATH	= $(BUILD)
 
-# clib+ Executable (DO NOT CHANGE)
-CLIBP_PATH  = /bin/gclibp
+#
+# Base-GCC Executable (DO NOT CHANGE)
+# Compile and Link sources with libbase
+#
+GBASE_EXEC 	= lbg
+GBASE_OBJ	= lbg.o
+GBASE_PATH 	= /bin/lbg	# Final Executable Path
 
 # Compilation flags and files
 FLAGS 		= -c -nostdlib -nostdinc
@@ -70,10 +75,10 @@ compile:
 # clean-up
 #
 cloader:
-	gcc -c linker/loader.c -o $(BUILD)/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
-	gcc -c linker/gcc_clibp.c -o gclibp.o -nostdlib -ffunction-sections -Wl,--gc-sections -fdata-sections
+	gcc -c ../linker/loader.c -o $(BUILD)/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
+	gcc -c ../linker/lbg.c -o $(GBASE_OBJ) -nostdlib -ffunction-sections -Wl,--gc-sections -fdata-sections
 # 	cp $(BUILD)/clibp.o cpy.o
-	ld --gc-sections -o gclibp gclibp.o $(BUILD)/$(LIB) $(BUILD)/loader.o
+	ld --gc-sections -o $(GBASE_EXEC) $(GBASE_OBJ) $(BUILD)/$(LIB) $(BUILD)/loader.o
 
 #"-ffunction-sections", "-fdata-sections", "-Wl,--gc-sections",
 
@@ -87,15 +92,15 @@ move:
 	cp -r headers/* $(HEADER_PATH)
 	cp $(BUILD)/$(LIB) $(LIB_PATH)
 	cp $(BUILD)/loader.o $(LIB_PATH)
-	cp gclibp $(CLIBP_PATH)
-	chmod +x $(CLIBP_PATH)
+	cp $(GBASE_EXEC) $(GBASE_PATH) 
+	chmod +x $(GBASE_PATH)
 
 #
 # Delete obj file
 #
 clean:
 	rm -rf *.o
-	rm gclibp
+	rm $(GBASE_EXEC)
 
 #
 # Test all test files in 'tests/'

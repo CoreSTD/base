@@ -1,10 +1,10 @@
-#include "../../../headers/clibp.h"
+#include "../../../headers/libbase.h"
 
 map_t init_map(void)
 {
 	map_t map = allocate(0, sizeof(_map));
 	if(!map)
-		clibp_panic("unable to allocate...!");
+		lb_panic("unable to allocate...!");
 
 	map->fields = allocate(0, sizeof(_field));
 	map->len = 0;
@@ -19,7 +19,7 @@ bool map_append(map_t map, string key, string value)
 
 	field_t field = allocate(0, sizeof(_field));
 	if(!field)
-		clibp_panic("segfault");
+		lb_panic("segfault");
 	field->key = str_dup(key);
 	field->value = str_dup(value);
 

@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "clibp.h"
+#include "libbase.h"
 
 /* 
 	Used to compile C - Stdlib malloc w/ clib+

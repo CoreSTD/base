@@ -1,12 +1,12 @@
-#include <clibp.h>
+#include <libbase.h>
 
 int entry()
 {
-	__CLIBP_DEBUG__ = 1;
+	__LB_DEBUG__ = 1;
 	fd_t file = open_file("/etc/os-release", 0, 0);
 	if(file < 0)
 	{
-		clibp_panic("error, unable to open file");
+		lb_panic("error, unable to open file");
 		return 1;
 	}
 
@@ -18,14 +18,14 @@ int entry()
 	string buffer = allocate(0, size + 1);
 	if(!buffer)
 	{
-		clibp_panic("error, unable to allocate memory...!");
+		lb_panic("error, unable to allocate memory...!");
 		return 1;
 	}
 
 	int bytes = file_read(file, buffer, size);
 	if(bytes <= 0)
 	{
-		clibp_panic("error, unable to read file...!");
+		lb_panic("error, unable to read file...!");
 		return 1;
 	}
 

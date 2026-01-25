@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <clibp.h>
+#define _LB_INTERNAL_H
+#include <libbase.h>
 #define STR_LEN 7
 #define _PRESTRING_ "Testing"
-
 fn test_fake_realloc()
 {
 	string n = allocate(0, 1);
@@ -13,7 +13,7 @@ fn test_fake_realloc()
 		string realloc = to_heap(n, i + 1);
 		if(!realloc)
 		{
-			clibp_panic("error, unable to realloc");
+			lb_panic("error, unable to realloc");
 		}
 
 		pfree(n, 1);

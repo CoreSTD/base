@@ -1,5 +1,5 @@
 <div align="center">
-	<h1>clib+ v3.0</h1>
+	<h1>libbase</h1>
 	<p>The official minimal C backend alternative to GLIBC</p>
 
 ● [Start-up](/README.md)
@@ -34,7 +34,7 @@ make # make tcc (for tcc (not complete, testing stage))
 ### Standard Use
 
 ```c
-#include <clibp.h>
+#include <libbase.h>
 
 int entry() {
 	println("Hello World");
@@ -46,6 +46,6 @@ int entry() {
 
 ### Linux Linker
 ```c
-Usage: gclibp <c_file> <opt> <output>
+Usage: lbg <c_file> <opt> <output>
 Use --help for help or more arguments
 ```

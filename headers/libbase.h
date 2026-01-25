@@ -8,20 +8,20 @@
 #pragma once
 
 extern char _OUTPUT_[1024];
-extern int __CLIBP_DEBUG__;
-#ifndef __CLIBP__
-	#define __CLIBP__
-	#define _CLIBP_INT_H
-	#define _CLIBP_CHAR_H
-	#define _CLIBP_STR_H
-	#define _CLIBP_ARR_H
-	#define _CLIBP_MAP_H
-	#define _CLIBP_MEM_H
-	#define _CLIBP_FILE_H
-	#define _CLIBP_SOCKET_H
-	#define _CLIBP_THREAD_H
-	#define _CLIBP_INTERNAL_H
-	#define _CLIBP_ALLOCATOR_H
+extern int __LB_DEBUG__;
+#ifndef __LB__
+	#define __LB__
+	#define _LB_INT_H
+	#define _LB_CHAR_H
+	#define _LB_STR_H
+	#define _LB_ARR_H
+	#define _LB_MAP_H
+	#define _LB_MEM_H
+	#define _LB_FILE_H
+	#define _LB_SOCKET_H
+	#define _LB_THREAD_H
+	#define _LB_INTERNAL_H
+	#define _LB_ALLOCATOR_H
 
 	
 	#define _printf(format, ...) \
@@ -119,9 +119,9 @@ long ___syscall__(long arg1, long arg2, long arg3, long arg4, long arg5, long ar
 // Get Start-up App Cmdline Arguments
 int 	get_args(char* argv[]);
 
-#ifdef _CLIBP_INTERNAL_H
-	#define clibp_panic(msg) 	\
-				__clibp_panic(msg, __FILE__, __LINE__);
+#ifdef _LB_INTERNAL_H
+	#define lb_panic(msg) 	\
+		__lb_panic(msg, __FILE__, __LINE__);
 
 	/* internal.c */
 	fn		toggle_debug_mode();
@@ -136,14 +136,14 @@ int 	get_args(char* argv[]);
 	fn 		printsz(const string buff, int sz);
 	fn 		print_args(sArr arr);
 	ptr		to_heap(ptr p, i32 sz);
-	fn		__clibp_panic(string msg, string file, int line);
+	fn		__lb_panic(string msg, string file, int line);
 #endif
 
 /*
 		Memory Utilities
 	@File: src/mem.c
 */
-#ifdef _CLIBP_MEM_H
+#ifdef _LB_MEM_H
 	/* General memory functions */
 	fn 		memzero(any ptr, size_t);
 	int 	mem_cmp(any src, any ptr, size_t size);
@@ -157,7 +157,7 @@ int 	get_args(char* argv[]);
 		Allocator
 	@File: src/allocator.c
 */
-#ifdef _CLIBP_ALLOCATOR_H
+#ifdef _LB_ALLOCATOR_H
 	#if defined(_C_MALLOC_ALTERNATIVE)
 		#define malloc allocate
 	#endif
@@ -212,7 +212,7 @@ int 	get_args(char* argv[]);
 			int
 	[ src/stdlib/int.c ]
 */
-#ifdef _CLIBP_INT_H
+#ifdef _LB_INT_H
 i32		count_int_digits(i32 num);
 #endif
 
@@ -220,7 +220,7 @@ i32		count_int_digits(i32 num);
 	 		char
 	[ src/stdlib/char.c ]
 */
-#ifdef _CLIBP_CHAR_H
+#ifdef _LB_CHAR_H
 	i32 	is_ascii(const char c);
 	i32 	is_ascii_alpha(const char c);
 	i32 	count_char(const string buffer, const char ch);
@@ -234,7 +234,7 @@ i32		count_int_digits(i32 num);
 	 		string
 	[ src/stdlib/string.c ]
 */
-#ifdef _CLIBP_STR_H
+#ifdef _LB_STR_H
 	#define __sprintf(dest, format, ...) \
 			_sprintf(dest, format, (void *[]){__VA_ARGS__, 0});
 
@@ -255,14 +255,14 @@ i32		count_int_digits(i32 num);
 	bool 	str_endswith(string buffer, string needle);
 #endif
 
-#ifdef _CLIBP_ARR_H
+#ifdef _LB_ARR_H
 	array 	init_array(void);
 	array	array_append(array arr, ptr p);
 	int 	array_contains_ptr(array arr, ptr p);
 	int 	array_contains_str(array arr, string needle);
 #endif
 
-#ifdef _CLIBP_MAP_H
+#ifdef _LB_MAP_H
 	typedef struct {
 		string key;
 		string value;
@@ -287,7 +287,7 @@ i32		count_int_digits(i32 num);
 	fn 		map_destruct(map_t map);
 #endif
 
-#ifdef _CLIBP_FILE_H
+#ifdef _LB_FILE_H
 	typedef u32 fd_t;
 
 	typedef enum FILE_MODE {
@@ -365,7 +365,7 @@ i32		count_int_digits(i32 num);
 	fn		file_close(fd_t fd);
 #endif
 
-#ifdef _CLIBP_SOCKET_H
+#ifdef _LB_SOCKET_H
 	#define AF_INET         2
 	#define SOL_SOCKET      1
 	#define SO_REUSEADDR    2
@@ -418,7 +418,7 @@ i32		count_int_digits(i32 num);
 	fn 			sock_close(sock_t);
 #endif
 
-#ifdef _CLIBP_THREAD_H
+#ifdef _LB_THREAD_H
 	typedef struct
 	{
 		handler_t	fnc;
