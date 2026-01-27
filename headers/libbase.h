@@ -213,7 +213,8 @@ int 	get_args(char* argv[]);
 	[ src/stdlib/int.c ]
 */
 #ifdef _LB_INT_H
-i32		count_int_digits(i32 num);
+	i32		count_int_digits(i32 num);
+	int		str_to_int(const char *s);
 #endif
 
 /*
