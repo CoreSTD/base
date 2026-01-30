@@ -41,6 +41,12 @@ string int_to_str(int num)
 {
 	int temp = num, c = 0;
     char buff[150] = {0};
+	
+	if(num == 0) {
+		buff[0] = '0';
+		return to_heap(buff, 1);	
+	}
+	
     while(temp)
     {
         buff[c++] = '0' + (temp % 10);
