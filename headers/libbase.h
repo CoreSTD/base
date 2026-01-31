@@ -411,7 +411,7 @@ int 	get_args(char* argv[]);
 	public int 			parse_ipv4(const char* ip, u32 *out);
 	public string 		convert_ip(u32 ip);
 	public u16			_htons(u16 x);
-	public u32 			_htonl(u32 x);
+	public u32			_htonl(u32 x);
 	public fn 			sock_close(sock_t);
 #endif
 
@@ -436,9 +436,9 @@ int 	get_args(char* argv[]);
 		int			idx;
 	} gthread;
 
-	public gthread 		init_group_thread();
-	public bool 		append_thread(gthread *g, thread_t t);
+	public gthread		init_group_thread();
+	public bool			append_thread(gthread *g, thread_t t);
 
 	public thread 		start_thread(handler_t fnc, ptr p, int wait);
-	public fn 			thread_kill(thread_t t);
+	public fn			thread_kill(thread_t t);
 #endif
