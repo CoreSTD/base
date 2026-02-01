@@ -29,7 +29,8 @@ public int file_content_size(fd_t fd)
 
 public int file_read(fd_t fd, string buffer, int sz)
 {
-    return __syscall__(fd, (long)buffer, sz, -1, -1, -1, _SYS_READ);
+    long ret = __syscall__(fd, (long)buffer, sz, -1, -1, -1, _SYS_READ);
+	return ret;
 }
 
 public int file_write(fd_t fd, const string buffer, len_t len)
