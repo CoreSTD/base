@@ -22,7 +22,7 @@
 - AMD
 - RISC-V (Still in development)
 
-Note: The only confirmed working architecture is x86 and x86_64. Mainly intel CPU!
+Note: The only confirmed working architecture is x86 and x86_64. Mainly on intel CPU!
 
 ### Install
 
